@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
+
+// this function return true or false if any element in first array match with element in second array
 public class ContainCommonITem {
         public static void main(String[] str){
             String[] array1= new String[]{"a","b","c","x"};
