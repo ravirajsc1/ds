@@ -1,6 +1,6 @@
 package ravi.sort;
 
-import static sun.util.calendar.CalendarUtils.mod;
+
 
 public class MergeSort {
 public static void main(String str[]){
@@ -20,8 +20,8 @@ public void merge(int[] arr,int p, int q, int r){
     for(int j=0;j<n2;j++){
         R[j]=arr[q+1+j];
     }
-    L[n1+1]=;
-    R[n2+1]=;
+    L[n1+1]=0;
+    R[n2+1]=0;
     int i=0;
     int j=0;
     for (int k=p;k<=r;k++){
