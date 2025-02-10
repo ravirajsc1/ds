@@ -54,7 +54,7 @@ public class ReverseString {
         }else{
             return "Reverse String dont makse sense";
         }
-        return Arrays.toString(reverseNamArray);
+        return new String(reverseNamArray);
     }
 
 }
