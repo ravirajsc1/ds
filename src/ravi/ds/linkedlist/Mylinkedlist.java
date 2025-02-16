@@ -76,6 +76,15 @@ public class Mylinkedlist<K> {
 
     }
 
+    public Mylinkedlist<K>  reverse(){
+        Mylinkedlist<K> reverse=new Mylinkedlist<>();
+        for(Node<K> current=this.first;current!=null;current=current.next){
+            reverse.addFirst(current.value);
+        }
+       //® reverse.addFirst(this.last.value);
+        return reverse;
+
+    }
     public void remove(int index){
        if(index>=0 && index<size-1) {
            Node<K> prev = this.first;
@@ -102,6 +111,7 @@ public class Mylinkedlist<K> {
         test.remove(1);
         test.printList(test);
 
+        test.printList(test.reverse());
 
     }
 
