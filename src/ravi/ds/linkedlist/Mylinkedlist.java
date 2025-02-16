@@ -77,12 +77,17 @@ public class Mylinkedlist<K> {
     }
 
     public void remove(int index){
-        Node<K> prev=this.first;
-        for(int i=0;i<index-1;i++){
-            prev=prev.next;
-        }
-        prev.next=prev.next.next;
-      this.size--;
+       if(index>=0 && index<size-1) {
+           Node<K> prev = this.first;
+
+           for (int i = 0; i < index - 1; i++) {
+               prev = prev.next;
+           }
+           prev.next = prev.next.next;
+           this.size--;
+       }else{
+           System.out.println("Wrong input");
+       }
     }
 
     public static void main(String[] args) {
