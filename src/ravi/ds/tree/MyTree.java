@@ -68,6 +68,42 @@ public class MyTree{
     }
 
 
+    public void remove(int v){
+        this.removeRec(this.top,v);
+    }
+
+    //         10
+//                 30
+//   4   6      20             50
+//
+    public Node removeRec(Node current,int v){
+        if(v<current.value){
+            current.left=  removeRec(current.left,v);
+        }else if(v> current.value){
+            current.right= removeRec(current.right,v);
+        }else{
+            if(current.left==null && current.right==null){
+                return null;
+            }else if(current.left==null){
+                return current.right;
+            }else if(current.right==null){
+                return current.left;
+            }else{
+                Node sucessor = findMin(current.right);
+                current.value=sucessor.value;
+                current.right=removeRec(current.right,sucessor.value);
+            }
+        }
+        return current;
+    }
+
+    private Node findMin(Node current) {
+        while(current.left!=null){
+            current=current.left;
+        }
+        return current;
+    }
+
     public void delete(int v){
 
         Node current=this.top;
@@ -140,10 +176,10 @@ public class MyTree{
        // intTree.printTree(intTree.top);
         System.out.println("LookValue:"+intTree.LookUp(50).value);
 
-        intTree.delete(30);
+        intTree.remove(30);
      //   printTree(intTree.top, 0);
 
-        intTree.delete(5);
+        intTree.remove(5);
         printTree(intTree.top, 0);
 
     }
