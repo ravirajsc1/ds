@@ -85,6 +85,27 @@ public class Mylinkedlist<K> {
         return reverse;
 
     }
+
+    public Mylinkedlist<K>  reverse2(){
+        Node<K> current=first.next;
+        this.last=this.first;
+        Node<K> prevOne=this.first;
+        //Name LinkedList Ravi middle Singh Chundawat
+        //Name LinkedList Chundawat Singh middle Ravi
+        while(current!=null){
+            Node<K> nextOne=current.next;
+            current.next=prevOne;
+            prevOne=current;
+            current=nextOne;
+
+        }
+        this.last.next=null;
+        this.first=prevOne;
+
+
+        return this ;
+    }
+
     public void remove(int index){
        if(index>=0 && index<size-1) {
            Node<K> prev = this.first;
@@ -111,7 +132,8 @@ public class Mylinkedlist<K> {
         test.remove(1);
         test.printList(test);
 
-        test.printList(test.reverse());
+       // test.printList(test.reverse());
+        test.printList(test.reverse2());
 
     }
 

@@ -4,12 +4,12 @@ import ravi.ds.stack.MyStack;
 
 public class MyQueue<K> {
     public class Node<K> {
-        Node<K> prev;
+        Node<K> next;
         K value;
 
         public Node(K value) {
             this.value = value;
-            this.prev = null;
+            this.next = null;
         }
     }
     private Node<K> first;
@@ -28,7 +28,7 @@ public class MyQueue<K> {
             this.first=newNode;
             this.last=newNode;
         }else{
-            this.first.prev=newNode;
+            newNode.next=this.first;
             this.first=newNode;
         }
         this.lenght++;
@@ -36,7 +36,7 @@ public class MyQueue<K> {
 
    public void deQueue(){
         if(this.lenght!=0){
-            this.last=this.last.prev;
+            this.first=this.first.next;
 
         }
         this.lenght--;
@@ -44,7 +44,7 @@ public class MyQueue<K> {
 
    public K peek(){
        if(this.lenght!=0){
-           return this.last.value;
+           return this.first.value;
 
        }
        return null;
@@ -66,10 +66,10 @@ public class MyQueue<K> {
     }
 
     public void printQueue(){
-        Node<K> current=this.last;
+        Node<K> current=this.first;
         while(current!=null){
             System.out.println("Value : "+current.value);
-            current=current.prev;
+            current=current.next;
         }
     }
 }
