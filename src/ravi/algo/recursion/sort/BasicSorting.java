@@ -1,4 +1,4 @@
-package ravi.sort;
+package ravi.algo.recursion.sort;
 
 import java.util.Arrays;
 
@@ -7,19 +7,21 @@ public class BasicSorting {
     public static void main(String[] args) {
         int[] array=new int[]{4,8,2,4,9,5,3,9,3,1};
         BasicSorting sorting=new BasicSorting();
+        printArray(array);
         Arrays.stream(array).forEach(System.out::print);
         System.out.println("");
         System.out.println("Bubble:-");
-        Arrays.stream(sorting.bubbleSortFn(array)).forEach(System.out::print);
+        printArray(sorting.bubbleSortFn(array));
         System.out.println("");
         int[] arra2 = {10, 3, 8, 15, 6, 12, 2, 18, 7, 5};
         int[] arr3={10, 3, 8, 15, 6, 12, 2, 18, 7, 5};;
         System.out.println("Selection:-");
-        Arrays.stream(sorting.selectioSortFn(arra2)).forEach(System.out::println);
+        printArray(sorting.selectioSortFn(arra2));
 
         System.out.println("insertion:-");
-        Arrays.stream(sorting.insertionSortfn(arr3)).forEach(System.out::println);
-    }
+        printArray(sorting.selectioSortFn(arr3));
+        int[] arry3={10, 3, 8, 15, 6, 12, 2, 18};;
+     }
     public int[] bubbleSortFn(int[] array){
 
         for(int i=0;i<array.length;i++){
@@ -66,6 +68,15 @@ public class BasicSorting {
             array[j+1]=key;
         }
         return array;
+    }
+
+
+    // Utility function to print the array
+    private static void printArray(int[] arr) {
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
     }
 
 }
