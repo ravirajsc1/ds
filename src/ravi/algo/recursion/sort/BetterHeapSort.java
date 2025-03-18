@@ -40,12 +40,7 @@ public class BetterHeapSort {
             heapify(array, n, largest);
         }
     }
-    //int[] arr = {2, 4, 5, 7, 1, 2, 3, 6};
-
-    2
-    4 5
-    7 1 2 3
-    6
+    //int[] arr = {2, 4, 5,
 
 
     // Build heap (max heap)

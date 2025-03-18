@@ -55,7 +55,7 @@ public class BasicSorting {
 
 
     // int[] arra2 = {10, 3, 15, 8, 6, 12, 2, 18, 7, 5};
-//3,10,15
+//3,10,15 8
 
     public int[] insertionSortfn(int[] array){
         for(int i=1;i<array.length;i++){
