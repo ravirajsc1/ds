@@ -58,19 +58,19 @@ public class DFS {
         dfs.add(8);
         dfs.add(1);
         System.out.println("BSF:"+dfs.containValue(2));
-//         5
-//      3        10
-//    1   4     8
-//           6       9
-//             8
-        dfs.traverseDSFInOrder();
 
+        System.out.println("Traverse DSF in order : ");
+
+        dfs.traverseDSFInOrder(dfs.root);
+
+        System.out.println("\nTraverse DSF pre order : ");
+        dfs.traverseDSFPreOrder(dfs.root);
+
+
+        System.out.println("\nTraverse post order : ");
+        dfs.traverseDSFPostOrder(dfs.root);
     }
 
-    //     5
-//      3    10
-//     1  4  8  6
-    //    9   8
 
     public boolean containValue(int v){
         return this.root!=null?this.findThroughRecursive(this.root,v):false;
@@ -91,14 +91,49 @@ public class DFS {
         return result;
     }
 
-    public void traverseDSFInOrder(){
+    //     5
+//      3    10
+//     1  4  8  6
+    //    9   8
+
+    public void traverseDSFInOrder(Node current){
+
+        if(current.left!=null){
+            traverseDSFInOrder(current.left);
+        }
+        System.out.print(" "+current.value);
+
+        if(current.right!=null){
+            traverseDSFInOrder(current.right);
+        }
+
 
     }
 
-    public void traverseDSFPostOrder(Node current,Queue<Node> tempQueue){
+    public void traverseDSFPostOrder(Node current){
+
+        if(current.left!=null){
+            traverseDSFPostOrder(current.left);
+        }
+        if(current.right!=null){
+            traverseDSFPostOrder(current.right);
+        }
+        System.out.print(" "+current.value);
+    }
+    public void traverseDSFPreOrder(Node current){
+        System.out.print(" "+current.value);
+        if(current.left!=null){
+            traverseDSFPreOrder(current.left);
+        }
+        if(current.right!=null){
+            traverseDSFPreOrder(current.right);
+        }
 
     }
-    public void traverseDSFPreOrder(Node current,Queue<Node> tempQueue){
 
-    }
+    //         5
+//      3        10
+//    1   4     8
+//           6       9
+//             8
 }

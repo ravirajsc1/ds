@@ -1,9 +1,6 @@
 package ravi.ds.graph;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MyGraph {
 
@@ -25,6 +22,63 @@ public class MyGraph {
 
     }
 
+    public void bsfSearch(int start) {
+
+        Set<Integer> visted = new HashSet<>();
+        LinkedList<Integer> qeue = new LinkedList<>();
+
+        if(Objects.isNull(adjList.get(start))){
+            throw new RuntimeException("No where to start");
+        }
+        visted.add(start);
+        //   visted.add(start);
+        qeue.add(start);
+        while (qeue.size() > 0) {
+            start = qeue.poll();
+            System.out.println(start + " ");
+
+            adjList.get(start).forEach(node -> {
+                if (!visted.contains(node)) {
+                    visted.add(node);
+                    qeue.add(node);
+                }
+
+            });
+        }
+    }
+
+
+    public void dsfSearch(Integer start){
+
+        if(Objects.isNull(adjList.get(start))){
+            throw new RuntimeException("No where to start");
+        }
+        Set<Integer> visted = new HashSet<>();
+        dsfRecursion(visted,start);
+
+
+    }
+
+
+    public void dsfRecursion(Set<Integer> visited,Integer s){
+
+        System.out.println(s+" ");
+        visited.add(s);
+        adjList.get(s).forEach(node-> {
+            if(!visited.contains(node)){
+
+                dsfRecursion(visited,node);
+            }
+        });
+
+
+
+
+    }
+
+
+
+
     public static void main(String[] args) {
         MyGraph myGraph=new MyGraph();
         myGraph.addVertex(1);
@@ -39,6 +93,10 @@ public class MyGraph {
         myGraph.addEdges(4,1);
         myGraph.printGraph();
 
+        System.out.println("BSF:");
+        myGraph.bsfSearch(3);
+        System.out.println("DSF:");
+        myGraph.dsfSearch(3);
     }
 
     public void printGraph(){
@@ -50,6 +108,8 @@ public class MyGraph {
             }
             System.out.println(printvalue );
         }
+
+
 
     }
 
