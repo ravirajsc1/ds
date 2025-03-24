@@ -1,6 +1,6 @@
 package ravi.ds.map;
 
-import java.util.Objects;
+import java.util.*;
 
 public class MyMap<K,V> {
 
@@ -68,7 +68,25 @@ public class MyMap<K,V> {
         return null;
     }
 
+    public List<K> getKeys(){
+        List<K> tempList=new ArrayList<K>();
+        Arrays.stream(this.table).forEach(node->{
+           if(node!=null){
+            tempList.add(node.key);
+            while(node.next!=null) {
+                    node = node.next;
+                    tempList.add(node.key);
+            }
+           }
+
+        });
+
+        return tempList;
+    }
+
+
     public static void main(String[] args) {
+
         MyMap<String,Integer> map=new MyMap<>();
         map.put("one",1);
         map.put("two",2);
@@ -76,6 +94,7 @@ public class MyMap<K,V> {
         System.out.println("One : "+map.get("one"));
         System.out.println("Two : "+map.get("two"));
         System.out.println("Three : "+map.get("three"));
+        System.out.println("keys :"+map.getKeys());
 
     }
 }

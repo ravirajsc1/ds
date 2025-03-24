@@ -1,6 +1,4 @@
-package ravi.sort;
-
-import java.util.Arrays;
+package ravi.algo.recursion.sort;
 
 public class InsertionSort {
     public static void main (String str[]){
