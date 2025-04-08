@@ -42,10 +42,252 @@ public class TwoPointers {
         System.out.println("validWordAbbreviation :  "+validWordAbbreviationBetter("minimum","mi3um"));
 
 
+       // Strobogrammatic Number
 
+        System.out.println("isStrobogrammatic :  "+isStrobogrammaticBetter("d"));
+
+        //Minimum Number of Moves to Make Palindrome
+
+        System.out.println("minMovesToMakePalindrome :  "+minMovesToMakePalindrome("eggeekgbbeg"));
+        System.out.println("minMovesToMakePalindrome :  "+minMovesToMakePalindromeBetter("eggeekgbbeg"));
+
+        //Next Palindrome Using Same Digits
+
+
+        System.out.println("findNextPalindrome of 23143034132 is :  "+findNextPalindromeBetter("55"));
 
     }
 
+    //  Next Palindrome Using Same Digits
+    public static String findNextPalindromeBetter(String numStr) {
+        char[] strArray=numStr.toCharArray();
+        if(numStr.length()==1){
+            return "";
+        }
+        int firtHalfIndex=strArray.length/2-1;
+
+
+        char middle = 0;
+        List<Character> list=new ArrayList<>();
+        for(int m=0;m<=firtHalfIndex;m++){
+            list.add(strArray[m]);
+        }
+
+        int i=firtHalfIndex-1;
+        while(i>=0 && list.get(i)>=list.get(i+1)){
+            i--;
+        }
+
+        if(i==-1){
+            return "";
+        }
+
+                
+        int j=firtHalfIndex;
+        while(j>i && list.get(i)>=list.get(j)){
+            j--;
+        }
+
+        Collections.swap(list,i,j);
+        Collections.reverse(list.subList(i+1,firtHalfIndex+1));
+
+        StringBuilder sb = new StringBuilder();
+        for (char c : list) {
+            sb.append(c);
+        }
+
+        if(strArray.length%2!=0){
+            middle=strArray[firtHalfIndex+1];
+            sb.append(middle);
+        }
+
+
+        Collections.reverse(list);
+        for (char c : list) {
+            sb.append(c);
+        }
+
+
+        // Replace the following return statement with your code
+
+        if(sb.toString().compareTo(numStr)>0){
+            return sb.toString();
+        }
+
+        return "";
+    }
+
+  //  Next Palindrome Using Same Digits
+    public static String findNextPalindrome(String numStr) {
+        char[] strArray=numStr.toCharArray();
+        int first=strArray.length/2-1;
+        int i=first;
+        int mov=0;
+        while(i>0){
+
+                if(strArray[i]>strArray[i-1]) {
+                    int lower = 0;
+
+                    for (int k = i - 1; k < first; k++) {
+                        lower = k + 1;
+                        for (int m = k + 2; m <= first; m++) {
+                            if (strArray[lower] > strArray[m]) {
+                                lower = m;
+                            }
+                        }
+                        mov++;
+                        char tempfirst = strArray[lower];
+                        strArray[lower] = strArray[k];
+                        strArray[k] = tempfirst;
+
+                        int secondLower=strArray.length-lower-1;
+                        int l=strArray.length-k-1;
+                        char tempsecond = strArray[secondLower];
+                        strArray[secondLower] = strArray[l];
+                        strArray[l] = tempsecond;
+                    }
+                    break;
+                }
+
+            i--;
+        }
+
+        // Replace the following return statement with your code
+      return mov==0?"":new String(strArray);
+    }
+
+
+    //Minimum Number of Moves to Make Palindrome
+
+    //Minimum Number of Moves to Make Palindrome
+
+    public static int minMovesToMakePalindromeBetter(String str) {
+
+        char[] charArray=str.toCharArray();
+        int mov=0;
+        for(int i=0,j=charArray.length-1;i<j;i++,j--){
+            int k=j;
+            for(;k>i;){
+                if(charArray[k]==charArray[i]){
+                    for(int l=k;l<j;l++){
+                        char temp=charArray[l];
+                        charArray[l]=charArray[l+1];
+                        charArray[l+1]=temp;
+                        mov++;
+                    }
+                    break;
+                }
+                k--;
+                if(k==i){
+                    mov=mov+charArray.length/2-i;
+                }
+            }
+
+        }
+
+
+        return mov;
+
+    }
+
+    public static int minMovesToMakePalindrome(String str) {
+        char[] charArray=str.toCharArray();
+        int left=0;
+        int right=charArray.length-1;
+        int mov=0;
+        while(left<=right) {
+            if (charArray[left] != charArray[right]){
+                int middle = right;
+                while (middle >= left + 1) {
+                    if (charArray[left] == charArray[middle]) {
+                        for (int i = middle; i < right; i++) {
+                            char temp = charArray[i];
+                            charArray[i] = charArray[i + 1];
+                            charArray[i + 1] = temp;
+                            mov++;
+
+                        }
+                        break;
+                    }else{
+                        if(middle==left+1){
+                            char temp = charArray[middle];
+                            charArray[middle] = charArray[left];
+                            charArray[left] = temp;
+                            mov++;
+                        }
+                    }
+                    middle--;
+
+                }
+
+
+            }
+                left++;
+                right--;
+
+        }
+        System.out.println("charArray : "+charArray.toString());
+
+        // Replace this placeholder return statement with your code
+        return mov;
+    }
+    //Strobogrammatic Number
+
+    public static boolean isStrobogrammaticBetter (String num) {
+
+      if(num==null){
+        return false;
+      }
+        Map<Character ,Character> dict=new HashMap<>();
+        dict.put('0','0');
+        dict.put('1','1');
+        dict.put('8','8');
+        dict.put('6','9');
+        dict.put('9','6');
+        char[] numArray=num.toCharArray();
+        int left=0;
+        int right=numArray.length-1;
+
+        if(left<=right){
+            if(!dict.containsKey(numArray[left]) || !dict.containsKey(numArray[right]) ||  !dict.get(numArray[left]).equals(numArray[right])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    public static boolean isStrobogrammatic (String num)
+    {
+
+        char[] numArray=num.toCharArray();
+        int left=0;
+        int right=numArray.length-1;
+
+        while(left<=right){
+            if(numArray[left]=='1' || numArray[left]=='6' || numArray[left]=='9'|| numArray[left]=='8' || numArray[left]=='0'
+               || numArray[right]=='1' || numArray[right]=='6' || numArray[right]=='9'|| numArray[right]=='8' || numArray[right]=='0'){
+                if((numArray[left]=='6' && numArray[right]=='9')
+                    || (numArray[left]=='9' && numArray[right]=='6')){
+
+                    right--;
+                    left++;;
+                }else if((numArray[left]=='1' || numArray[left]=='8' || numArray[left]=='0') && numArray[left]==numArray[right]){
+
+                    right--;
+                    left++;;
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }
+
+
+
+        // Replace this placeholder return statement with your code
+        return true;
+    }
 
     public static boolean validWordAbbreviationBetter(String word, String abbr) {
 
