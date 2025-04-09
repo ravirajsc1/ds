@@ -56,7 +56,184 @@ public class TwoPointers {
 
         System.out.println("findNextPalindrome of 23143034132 is :  "+findNextPalindromeBetter("55"));
 
+
+        MyBTree myBTree=new MyBTree();
+        //4,3,6,2,1,7,5
+        myBTree.add(12);
+        myBTree.add(7);
+        myBTree.add(1);
+        myBTree.add(9);
+        myBTree.add(10);
+        myBTree.add(15);
+        myBTree.add(2);
+        myBTree.add(5);
+//LowestCommonAncestor
+//
+        System.out.println("LowestCommonAncestor of [4,3,6,2,1,7,5] is :  "+lowestCommonAncestorTwoPointerBetter(myBTree,5,10).value);
+
+     //   Count Pairs Whose Sum is Less than Target
+        List<Integer> nums= new ArrayList<>();
+        nums.add(1);
+        nums.add(3);
+        nums.add(2);
+        nums.add(4);
+        nums.add(5);
+        int target=6;
+        System.out.println("countPairs  is :  "+countPairs(nums,target));
+
+        //Write a function that takes a string as input and checks whether it can be a valid palindrome by removing at most one character from it.
+
+
+        System.out.println("countPairs  is :  "+isPalindrome("madame"));
     }
+
+    //Write a function that takes a string as input and checks whether it can be a valid palindrome by removing at most one character from it.
+
+
+    public static boolean isPalindrome(String string) {
+        char[] charArr=string.toCharArray();
+        int right=charArr.length-1;
+        int left=0;
+        int count=0;
+        while(left<right){
+            if(charArr[left]!=charArr[right]) {
+                if (charArr[left] == charArr[right - 1]) {
+                    right--;
+                    count++;
+                } else if (charArr[left + 1] == charArr[right]) {
+                    left++;
+                    count++;
+                } else {
+                    return false;
+                }
+
+            }else{
+                right--;
+                left++;
+            }
+        }
+
+
+
+        // Replace this placeholder return statement with your code
+
+        return count==1?true:false;
+    }
+    public static int countPairs (List<Integer> nums, int target) {
+        Collections.sort(nums);
+        int high=nums.size()-1;
+        int low=0;
+        List<int[]> pairArray=new ArrayList<>();
+        while(low<high){
+            if(nums.get(low)+nums.get(high)<target){
+                for(int i=high;i>low;i--){
+                    pairArray.add(new int[]{nums.get(low),nums.get(i)});
+                }
+                low++;
+            }else{
+                high--;
+            }
+        }
+        // Replace this placeholder return statement with your code
+        return pairArray.size();
+    }
+    private static MyBTree.Node lowestCommonAncestorTwoPointerBetter(MyBTree myTree, int left,int right) {
+
+
+        MyBTree.Node node1= myTree.lookup(left);
+        MyBTree.Node node2= myTree.lookup(right);
+        MyBTree.Node itr1=node1;
+        MyBTree.Node itr2=node2;
+
+        while(node1!=null && node2!=null && itr1.value!=itr2.value){
+            itr1= itr1.parent;
+            if(itr1==null){
+
+                itr1=node2;
+            }
+            itr2= itr2.parent;
+            if(itr2==null){
+                itr2=node1;
+            }
+
+            System.out.println("-->"+itr1.value+"<--"+"-->"+itr2.value+"<--");
+        }
+        return itr1;
+
+    }
+
+
+    private static MyBTree.Node lowestCommonAncestorBetter(MyBTree myTree, int left,int right) {
+
+
+        MyBTree.Node node1= myTree.lookup(left);
+        MyBTree.Node node2=  myTree.lookup(right);
+
+        while(node1!=null && node2!=null && node1.value!=node2.value){
+            node1= node1.parent;
+            node2= node2.parent;
+        }
+        return node1;
+
+    }
+
+    private static MyBTree.Node lowestCommonAncestor(MyBTree myTree, int left,int right) {
+
+       List<MyBTree.Node> lookupH1=  findHirerecyOftree(myTree,left);
+       List<MyBTree.Node> lookupH2=  findHirerecyOftree(myTree, right);
+
+       /* with no parent
+       Collections.reverse(lookupH1);
+       Collections.reverse(lookupH2);
+
+
+        for(MyBTree.Node n1:lookupH1){
+           for(MyBTree.Node n2:lookupH2){
+                if(n1.value==n2.value){
+                    return n1;
+                }
+
+           }
+
+       }*/
+
+        MyBTree.Node prev = myTree.getHead();
+        for(int i=0,j=0;(i<lookupH1.size() || j<lookupH2.size());i++,j++){
+            if(lookupH1.get(i).equals(lookupH2.get(j))){
+                prev= lookupH1.get(i);
+            }else{
+                break;
+            }
+        }
+        return prev;
+    }
+
+    private static List<MyBTree.Node> findHirerecyOftree(MyBTree tree,int value) {
+        List<MyBTree.Node> result=new ArrayList();
+        MyBTree.Node current=tree.getHead();
+        if(tree.getHead().value==value){
+            result.add(tree.getHead());
+            return result;
+        }
+        while(current!=null){
+            result.add(current);
+            if(current.value>=value){
+                current=current.left;
+
+            }else{
+                current=current.right;
+            }
+
+            if(current!=null && current.value==value){
+                result.add(current);
+                break;
+            }
+        }
+
+        return result;
+
+    }
+
 
     //  Next Palindrome Using Same Digits
     public static String findNextPalindromeBetter(String numStr) {
