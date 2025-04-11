@@ -1,5 +1,6 @@
 package ravi.algo.concepts;
 
+import java.util.DuplicateFormatFlagsException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,7 +8,9 @@ public class SlowFastPointer {
     public static void main(String[] args) {
 
         // is a happy number.
-        System.out.println("is Happy Number?"+isHappyNumber(1));
+        System.out.println(" sumOfSquare?"+sumOfSquare(1234));
+
+        System.out.println("is Happy Number?"+isHappyNumberBetter(1));
     }
 
     /*
@@ -22,6 +25,32 @@ Repeat the process until  The number equals
  is not a happy number. Return TRUE if is a happy number, and FALSE if not.
      */
 
+    public static int sumOfSquare(int n) {
+        int totalSum=0;
+        while(n!=0){
+            int digit= n%10;
+            totalSum += (Math.pow(digit, 2));
+            n=n/10;
+
+        }
+        return totalSum;
+    }
+
+    public static boolean isHappyNumberBetter(int n) {
+        int slowPointer=n;
+        int fastPointer=sumOfSquare(n);
+        while(fastPointer!=1 && fastPointer!=slowPointer){
+            slowPointer=sumOfSquare(slowPointer);
+            fastPointer=sumOfSquare(sumOfSquare(fastPointer));
+        }
+
+        if(fastPointer==1){
+            return true;
+        }
+        return false;
+    }
+
+// navie
     public static boolean isHappyNumber(int n) {
         String numStr=String.valueOf(n);
         char[] numArray=numStr.toCharArray();
