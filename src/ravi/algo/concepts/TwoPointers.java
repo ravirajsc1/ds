@@ -84,12 +84,34 @@ public class TwoPointers {
         //Write a function that takes a string as input and checks whether it can be a valid palindrome by removing at most one character from it.
 
 
-        System.out.println("countPairs  is :  "+isPalindrome("madame"));
+        System.out.println("countPairs  is :  "+isPalindrome("madeame"));
+
+        System.out.println("countPairs  is :  "+validPalindrome("madeame"));
     }
 
     //Write a function that takes a string as input and checks whether it can be a valid palindrome by removing at most one character from it.
 
+    public static boolean validPalindrome(String s) {
+        int left = 0, right = s.length() - 1;
 
+        while (left < right) {
+            if (s.charAt(left) != s.charAt(right)) {
+                // Try skipping either left or right character
+                return isPalindrome(s, left + 1, right) || isPalindrome(s, left, right - 1);
+            }
+            left++;
+            right--;
+        }
+
+        return true; // It's already a palindrome
+    }
+
+    private static boolean isPalindrome(String s, int left, int right) {
+        while (left < right) {
+            if (s.charAt(left++) != s.charAt(right--)) return false;
+        }
+        return true;
+    }
     public static boolean isPalindrome(String string) {
         char[] charArr=string.toCharArray();
         int right=charArr.length-1;
