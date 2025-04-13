@@ -1,7 +1,10 @@
 package ravi.algo.concepts;
 
+import ravi.ds.linkedlist.Mylinkedlist;
+
 import java.util.DuplicateFormatFlagsException;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 public class SlowFastPointer {
@@ -11,6 +14,52 @@ public class SlowFastPointer {
         System.out.println(" sumOfSquare?"+sumOfSquare(1234));
 
         System.out.println("is Happy Number?"+isHappyNumberBetter(1));
+
+        //Linked List Cycle
+        Mylinkedlist<Integer> linkedList=new Mylinkedlist<>();
+        linkedList.addLast(1);
+        linkedList.addLast(2);
+        linkedList.addLast(3);
+        linkedList.addLast(4);
+        linkedList.addLast(5);
+        linkedList.addLast(6);
+        //linkedList.getLast().next= linkedList.getFirst();
+        System.out.println("is detectCycle ?"+detectCycle(linkedList.getFirst()));
+
+        //Middle of the Linked List
+        System.out.println("is detectCycle ?"+middleNode(linkedList.getFirst()));
+    }
+
+    //Middle of the Linked List
+    public static Mylinkedlist.Node middleNode(Mylinkedlist.Node head) {
+        Mylinkedlist.Node firstPointer=head;
+        Mylinkedlist.Node secondPointer=head;
+        while(secondPointer!=null && secondPointer.next!=null){
+            firstPointer=firstPointer.next;
+            secondPointer=secondPointer.next.next;
+        }
+        // Replace this placeholder return statement with your code
+        return firstPointer;
+    }
+
+
+//Linked List Cycle
+    public static boolean detectCycle(Mylinkedlist.Node
+                                              head) {
+
+        Mylinkedlist.Node firstPointer=head;
+        Mylinkedlist.Node secondPointer=head;
+        while(firstPointer!=null && secondPointer!=null) {
+            firstPointer=firstPointer.next;
+            secondPointer=secondPointer.next.next;
+            if(firstPointer==secondPointer) {
+                return true;
+            }
+        }
+
+        // Replace this placeholder return statement with your code
+
+        return false;
     }
 
     /*
@@ -80,6 +129,10 @@ Repeat the process until  The number equals
         return false;
 
     }
+
+
+
+
 
 
 }

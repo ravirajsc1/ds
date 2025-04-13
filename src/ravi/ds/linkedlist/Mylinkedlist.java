@@ -5,14 +5,38 @@ import java.util.LinkedList;
 public class Mylinkedlist<K> {
 
     public class Node<K>{
-        K value;
-        Node<K> next;
+        public K value;
+        public Node<K> next;
 
         public Node(K k) {
             this.value=k;
             this.next=null;
 
         }
+    }
+
+    public Node<K> getFirst() {
+        return first;
+    }
+
+    public void setFirst(Node<K> first) {
+        this.first = first;
+    }
+
+    public Node<K> getLast() {
+        return last;
+    }
+
+    public void setLast(Node<K> last) {
+        this.last = last;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 
     private Node<K> first;
@@ -73,6 +97,16 @@ public class Mylinkedlist<K> {
 
         }
 
+
+    }
+
+    public Node getNode(int index){
+        Node<K> result=this.first;
+        int i=0;
+        while(i<=index){
+            result=result.next;
+        }
+        return result;
 
     }
 
