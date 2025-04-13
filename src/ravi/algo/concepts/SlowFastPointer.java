@@ -1,5 +1,6 @@
 package ravi.algo.concepts;
 
+import jdk.jshell.execution.JdiExecutionControl;
 import ravi.ds.linkedlist.Mylinkedlist;
 
 import java.util.DuplicateFormatFlagsException;
@@ -11,12 +12,12 @@ public class SlowFastPointer {
     public static void main(String[] args) {
 
         // is a happy number.
-        System.out.println(" sumOfSquare?"+sumOfSquare(1234));
+        System.out.println(" sumOfSquare?" + sumOfSquare(1234));
 
-        System.out.println("is Happy Number?"+isHappyNumberBetter(1));
+        System.out.println("is Happy Number?" + isHappyNumberBetter(1));
 
         //Linked List Cycle
-        Mylinkedlist<Integer> linkedList=new Mylinkedlist<>();
+        Mylinkedlist<Integer> linkedList = new Mylinkedlist<>();
         linkedList.addLast(1);
         linkedList.addLast(2);
         linkedList.addLast(3);
@@ -24,11 +25,113 @@ public class SlowFastPointer {
         linkedList.addLast(5);
         linkedList.addLast(6);
         //linkedList.getLast().next= linkedList.getFirst();
-        System.out.println("is detectCycle ?"+detectCycle(linkedList.getFirst()));
+        System.out.println("is detectCycle ?" + detectCycle(linkedList.getFirst()));
 
         //Middle of the Linked List
-        System.out.println("is detectCycle ?"+middleNode(linkedList.getFirst()));
+        System.out.println("is detectCycle ?" + middleNode(linkedList.getFirst()));
+
+        //Circular Array Loop
+        int[] nums=new int[]{2,1,-1,-2};
+        System.out.println("is Circular Array ?"+circularArrayLoop(nums));
+
+        System.out.println("is Circular Array ?"+circularArrayLoopBetter(nums));
+
     }
+
+    //
+    public static boolean circularArrayLoopBetter(int[] nums) {
+        int n = nums.length;
+        for (int start=0;start<n;start++){
+            int slow=start;
+            int fast=start;
+            boolean direction=nums[start]>0;
+            while(true){
+                slow=nextStep(slow,nums[slow],n);
+                if(isNotCycle(nums, direction,slow))
+                    break;
+
+                fast=nextStep(fast,nums[fast],n);
+                if(isNotCycle(nums, direction,fast))
+                    break;
+
+                fast=nextStep(fast,nums[fast],n);
+                if(isNotCycle(nums, direction,fast))
+                    break;
+
+
+                if(slow==fast){
+                    return true;
+                }
+            }
+
+
+        }
+
+        return false;  // No cycle found
+    }
+
+    private static boolean isNotCycle(int[] nums, boolean direction, int pointer) {
+        if(nums[pointer]>=0!=direction || nums[pointer]%nums.length==0){
+            return true;
+        }
+        return false;
+    }
+
+    private static int nextStep(int pointer, int value, int size) {
+        int result=(pointer+value)%size;
+        if(result<0){
+            result+=size;
+        }
+        return result;
+    }
+
+    public static boolean circularArrayLoop(int[] nums) {
+        int n=nums.length;
+
+        for(int start=0;start<n;start++){
+            if(nums[start]==0){
+                break;
+            }
+            int current=start;
+            int step=0;
+            boolean directon=nums[start]>0;
+            boolean[] visited=new boolean[n];
+            while(true){
+                current=(current+nums[current])%n;
+
+                if(current<0){
+                    current=n-current;
+                }
+                if(step==0 && current==start){
+                    break;
+                }
+
+                if((nums[current]>0)!=directon){
+                    break;
+                }
+                if(step>0 && current==start){
+                   return true;
+                }
+
+                if(visited[current]){
+                    break;
+                }
+
+                visited[current]=true;
+                step++;
+            }
+
+            for(int i=0;i<n;i++){
+                if(visited[i]){
+                    nums[i]=0;
+                }
+            }
+        }
+
+
+        return false;
+    }
+
 
     //Middle of the Linked List
     public static Mylinkedlist.Node middleNode(Mylinkedlist.Node head) {
