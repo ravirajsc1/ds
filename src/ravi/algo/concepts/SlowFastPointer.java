@@ -3,10 +3,7 @@ package ravi.algo.concepts;
 import jdk.jshell.execution.JdiExecutionControl;
 import ravi.ds.linkedlist.Mylinkedlist;
 
-import java.util.DuplicateFormatFlagsException;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 public class SlowFastPointer {
     public static void main(String[] args) {
@@ -31,13 +28,150 @@ public class SlowFastPointer {
         System.out.println("is detectCycle ?" + middleNode(linkedList.getFirst()));
 
         //Circular Array Loop
-        int[] nums=new int[]{2,1,-1,-2};
+        int[] nums=new int[]{1, 2, 1, 1, 2};
         System.out.println("is Circular Array ?"+circularArrayLoop(nums));
+        nums=new int[]{1, 2, 1, 1, 2};
 
         System.out.println("is Circular Array ?"+circularArrayLoopBetter(nums));
 
+        //Find the Duplicate Number
+        nums=new int[]{1,3,6,2,7,3,5,4};
+        System.out.println("is findDuplicate ?"+findDuplicate(nums));
+
+        //Palindrome Linked List
+
+
+        Mylinkedlist<Integer> mylinkedlist = new Mylinkedlist<>();
+        mylinkedlist.addLast(3);
+        mylinkedlist.addLast(4);
+        mylinkedlist.addLast(5);
+        //     mylinkedlist.addLast(6);
+        mylinkedlist.addLast(5);
+        mylinkedlist.addLast(4);
+        mylinkedlist.addLast(3);
+        //linkedList.getLast().next= linkedList.getFirst();
+
+        System.out.println("is palindrome ?" + palindromeBetter(mylinkedlist.getFirst()));
+
     }
 
+    public static boolean palindromeBetter(Mylinkedlist.Node head) {
+        // find middle
+        Mylinkedlist.Node slow=head;
+        Mylinkedlist.Node fast=head;
+
+        while(fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        Mylinkedlist.Node reveredData=reverseLinkedList(slow);
+        boolean check=compareTwoHalves(head,reveredData);
+        reverseLinkedList(reveredData);
+
+        if(check){
+            return true;
+        }
+        //reverse last half
+
+        //compare
+        //reverse last half
+        return false;
+
+    }
+
+    private static boolean compareTwoHalves(Mylinkedlist.Node head, Mylinkedlist.Node reveredData) {
+        Mylinkedlist.Node firstHalf=head;
+        Mylinkedlist.Node secondHalf=reveredData;
+        while(secondHalf!=null){
+            if(firstHalf.value!=secondHalf.value){
+                return false;
+            }
+            firstHalf=firstHalf.next;
+            secondHalf=secondHalf.next;
+
+        }
+        return true;
+    }
+
+    private static Mylinkedlist.Node reverseLinkedList(Mylinkedlist.Node slow) {
+
+        Mylinkedlist.Node prev=null;
+        Mylinkedlist.Node curr=slow;
+        Mylinkedlist.Node next=null;
+        while(curr!=null){
+            next=curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=next;
+        }
+        return prev;
+    }
+
+    //Palindrome Linked List
+    public static boolean palindrome(Mylinkedlist.Node head) {
+        Mylinkedlist.Node slow=head;
+        Mylinkedlist.Node fast=head;
+
+        while(fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+
+        Mylinkedlist.Node current=slow;
+        Mylinkedlist.Node prev=null;
+        Mylinkedlist.Node next=null;
+        Mylinkedlist.Node last=null;
+
+        while(current!=null){
+            next=current.next;
+            if(current.next==null)
+                last=current;
+            current.next=prev;
+            prev=current;
+            current=next;
+        }
+
+        current=head;
+
+        while(current!=slow){
+            if(prev.value!=current.value){
+                return false;
+            }
+            prev=prev.next;
+            current=current.next;
+
+        }
+
+        current=last;
+        prev=null;
+        while(current!=null){
+            next=current.next;
+            current.next=prev;
+            prev=current;
+            current=next;
+        }
+
+        // Replace this placeholder return statement with your code
+        return true;
+    }
+
+    //Find the Duplicate Number
+    public static int findDuplicate(int[] nums) {
+        int slow=nums[0];
+        int fast=nums[nums[0]];
+
+        while(slow!=fast){
+            slow=nums[slow];
+            fast=nums[nums[fast]];
+        }
+        slow=0;
+        while(slow!=fast){
+            slow=nums[slow];
+            fast=nums[fast];
+        }
+        // Replace this placeholder return statement with your code
+        return fast;
+    }
     //
     public static boolean circularArrayLoopBetter(int[] nums) {
         int n = nums.length;
