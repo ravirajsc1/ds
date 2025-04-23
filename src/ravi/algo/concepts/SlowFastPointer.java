@@ -53,6 +53,73 @@ public class SlowFastPointer {
 
         System.out.println("is palindrome ?" + palindromeBetter(mylinkedlist.getFirst()));
 
+        // Maximum Twin Sum of a Linked List
+
+        Mylinkedlist<Integer> mylinkedlistSum = new Mylinkedlist<>();
+        mylinkedlistSum.addLast(1);
+        mylinkedlistSum.addLast(2);
+        mylinkedlistSum.addLast(3);
+        //     mylinkedlist.addLast(6);
+        mylinkedlistSum.addLast(3);
+        mylinkedlistSum.addLast(2);
+        mylinkedlistSum.addLast(1);
+        //linkedList.getLast().next= linkedList.getFirst();
+
+        System.out.println("is getLargest ?" + twinSum(mylinkedlistSum.getFirst()));
+
+    }
+
+    // Maximum Twin Sum of a Linked List
+    public static int twinSum(Mylinkedlist<Integer> .Node<Integer>  head) {
+        //Maximum Twin Sum of a Linked List
+        Mylinkedlist<Integer>.Node<Integer>  slow=head;
+        Mylinkedlist<Integer>.Node<Integer>  fast=head;
+
+        //get to the middle
+        while(fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+
+        Mylinkedlist<Integer>.Node<Integer> mid=reverseTheList(slow);
+
+        int max=getLargest(mid,head);
+
+        reverseTheList(mid);
+
+        // Replace this placeholder return statement with your code
+        return max;
+    }
+
+    private static int getLargest(Mylinkedlist<Integer>.Node<Integer> mid, Mylinkedlist<Integer>.Node<Integer> head) {
+        int max=0;
+        Mylinkedlist<Integer>.Node<Integer> secondhalf=mid;
+        Mylinkedlist<Integer>.Node<Integer> firstHalf=head;
+
+        while(firstHalf!=null && secondhalf!=null){
+
+            if((firstHalf.value+secondhalf.value)>=max){
+                max=firstHalf.value+secondhalf.value;
+
+            }
+            firstHalf=firstHalf.next;
+            secondhalf=secondhalf.next;
+        }
+        return max;
+    }
+
+    private static Mylinkedlist<Integer>.Node<Integer>  reverseTheList(Mylinkedlist<Integer>.Node<Integer> slow){
+        Mylinkedlist<Integer>.Node<Integer> prev=null;
+        Mylinkedlist<Integer>.Node<Integer> cur=slow;
+        Mylinkedlist<Integer>.Node<Integer> next;
+
+        while(cur!=null){
+            next=cur.next;
+            cur.next=prev;
+            prev=cur;
+            cur=next;
+        }
+        return prev;
     }
 
     public static boolean palindromeBetter(Mylinkedlist.Node head) {
