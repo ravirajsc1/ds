@@ -66,8 +66,48 @@ public class SlowFastPointer {
         //linkedList.getLast().next= linkedList.getFirst();
 
         System.out.println("is getLargest ?" + twinSum(mylinkedlistSum.getFirst()));
+//Split a Circular Linked List
+
+        Mylinkedlist<Integer> mylinkedlistCircle = new Mylinkedlist<>();
+        mylinkedlistCircle.addLast(1);
+        mylinkedlistCircle.addLast(2);
+      //  mylinkedlistCircle.addLast(3);
+        //     mylinkedlist.addLast(6);
+     //   mylinkedlistCircle.addLast(3);
+        mylinkedlistCircle.addLast(2);
+        mylinkedlistCircle.addLast(1);
+        //linkedList.getLast().next= linkedList.getFirst();
+        mylinkedlistCircle.getLast().next=mylinkedlistCircle.getFirst();
+        System.out.println(" splitCircularLinkedList ?" + splitCircularLinkedList(mylinkedlistCircle.getFirst()));
 
     }
+
+   public static Mylinkedlist<Integer> .Node<Integer>[] splitCircularLinkedList(Mylinkedlist<Integer> .Node<Integer> head) {
+        Mylinkedlist<Integer> .Node<Integer> slow=head;
+        Mylinkedlist<Integer> .Node<Integer> fast=head;
+        Mylinkedlist<Integer> .Node<Integer> head1=head;
+       Mylinkedlist<Integer> .Node<Integer>  head2=head;
+        // Placeholder for actual implementation
+
+        while(fast.next!=head && fast.next.next!=head){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+
+        head2=slow.next;
+        head1=head;
+
+        slow.next=head1;
+        fast=head2;
+        while(fast.next!=head){
+            fast=fast.next;
+        }
+        fast.next=head2;
+
+        return new Mylinkedlist.Node[]{head1, head2}; // Return two empty lists as placeholders
+    }
+    //Split a Circular Linked List
+
 
     // Maximum Twin Sum of a Linked List
     public static int twinSum(Mylinkedlist<Integer> .Node<Integer>  head) {
