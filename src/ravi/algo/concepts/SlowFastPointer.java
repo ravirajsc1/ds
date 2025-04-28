@@ -80,7 +80,102 @@ public class SlowFastPointer {
         mylinkedlistCircle.getLast().next=mylinkedlistCircle.getFirst();
         System.out.println(" splitCircularLinkedList ?" + splitCircularLinkedList(mylinkedlistCircle.getFirst()));
 
+
+        //Linked List Cycle III
+
+        Mylinkedlist<Integer> mylinkedlistCycle = new Mylinkedlist<>();
+        mylinkedlistCycle.addLast(1);
+        mylinkedlistCycle.addLast(2);
+        //  mylinkedlistCircle.addLast(3);
+        //     mylinkedlist.addLast(6);
+        //   mylinkedlistCircle.addLast(3);
+        mylinkedlistCycle.addLast(2);
+        mylinkedlistCycle.addLast(1);
+        //linkedList.getLast().next= linkedList.getFirst();
+        mylinkedlistCycle.getLast().next=mylinkedlistCircle.getFirst();
+        System.out.println(" countCycleLength ?" + countCycleLength(mylinkedlistCycle.getFirst()));
+
+        //Linked List Cycle IV
+      //  Given the head of a singly linked list, implement a function to detect and remove any cycle present in the list. A cycle occurs when a node's next pointer links back to a previous node, forming a loop within the list.
+
+        //The function must modify the linked list in place, ensuring it remains acyclic while preserving the original node order. If no cycle is found, return the linked list as is.
+
+        Mylinkedlist<Integer> mylinkedlistCycleV = new Mylinkedlist<>();
+        mylinkedlistCycleV.addLast(1);
+        mylinkedlistCycleV.addLast(2);
+        //  mylinkedlistCircle.addLast(3);
+        //     mylinkedlist.addLast(6);
+        //   mylinkedlistCircle.addLast(3);
+        mylinkedlistCycleV.addLast(2);
+        mylinkedlistCycleV.addLast(1);
+        //linkedList.getLast().next= linkedList.getFirst();
+        mylinkedlistCycleV.getLast().next=mylinkedlistCircle.getFirst();
+        System.out.println(" countCycleLength ?" + countCycleLength(mylinkedlistCycleV.getFirst()));
+
     }
+
+    //Linked List Cycle IV
+
+    public static Mylinkedlist<Integer>.Node<Integer> removeCycle(Mylinkedlist<Integer>.Node<Integer> head) {
+        // Replace this placeholder return statement with your code
+        Mylinkedlist<Integer>.Node<Integer> slow=head;
+        Mylinkedlist<Integer>.Node<Integer> fast=head;
+
+        while(fast!=null & fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+            if(slow==fast){
+                break;
+            }
+        }
+
+        if(fast==null || fast.next==null)
+            return head;
+
+        slow=head;
+
+        while(slow!=fast){
+            slow=slow.next;
+            fast=fast.next;
+        }
+
+        while(fast.next!=slow){
+            fast=fast.next;
+        }
+        fast.next=null;
+
+
+        return head;
+    }
+
+    public static int countCycleLength(Mylinkedlist<Integer>.Node<Integer>  head) {
+        Mylinkedlist<Integer>.Node<Integer> slow=head;
+        Mylinkedlist<Integer>.Node<Integer> fast=head;
+        int count=0;
+        while(fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+            if(slow==fast){
+                break;
+            }
+        }
+
+        if(fast!=null && fast.next!=null){
+            fast=fast.next;
+            count++;
+            while(slow!=fast){
+                count++;
+                fast=fast.next;
+            }
+        }
+
+
+
+        // Replace this placeholder return statement with your code
+
+        return count;
+    }
+
 
    public static Mylinkedlist<Integer> .Node<Integer>[] splitCircularLinkedList(Mylinkedlist<Integer> .Node<Integer> head) {
         Mylinkedlist<Integer> .Node<Integer> slow=head;
