@@ -79,7 +79,290 @@ public class SlidingWIndow {
             System.out.println(new String(new char[100]).replace("\0", "-"));
         }
 
+
+        //Minimum Window Substring Given two strings, s and t, find the minimum window substring in s, which has the following properties:
+
+        String[] s = {"PATNERT", "LIFE", "ABRACADABRA", "STRIKER", "DFFDFDFVD"};
+        String[] t = {"TTN", "I", "ABC", "RK", "VDD"};
+
+        for (int i = 0; i < s.length; i++) {
+            System.out.printf("%d.\ts: %s\n\tt: %s\n\tThe minimum substring containing %s is: %s\n",
+                    i + 1, s[i], t[i], t[i], minWindowSubstring(s[i], t[i]));
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+
+        //Longest Substring without Repeating Characters Given a string, str, return the length of the longest substring without repeating characters.
+
+        String[] inputs = {
+                "abcdbea",
+                "pwwkew",
+                "bbbbb",
+                "ababababa",
+                "",
+                "ABCDEFGHI",
+                "ABCDEDCBA",
+                "AAAABBBBCCCCDDDD"
+        };
+        for (int i = 0; i < inputs.length; i++) {
+            int str = findLongestSubstringBetter(inputs[i]);
+            System.out.print(i + 1);
+            System.out.println("\tInput string: " + inputs[i]);
+            System.out.println("\n\tLength of longest substring: " + str);
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+
+        //Minimum Size Subarray Sum
+
+        //Given an array of positive integers, nums, and a positive integer, target, find the minimum length of a contiguous subarray whose sum is greater than or equal to the target. If no such subarray is found, return 0.
+
+        int[] target = {7, 4, 11, 10, 5, 15};
+        int[][] inputArr = {
+                {2, 3, 1, 2, 4, 3},
+                {1, 4, 4},
+                {1, 1, 1, 1, 1, 1, 1, 1},
+                {1, 2, 3, 4},
+                {1, 2, 1, 3},
+                {5, 4, 9, 8, 11, 3, 7, 12, 15, 44}
+        };
+        for (int i = 0; i < target.length; i++) {
+            int windowSize = minSubArrayLen(target[i], inputArr[i]);
+            System.out.print((i + 1) + ".\tInput array: " + Arrays.toString(inputArr[i]));
+            System.out.print("\n\tTarget: " + target[i]);
+            System.out.println("\n\tMinimum Length of Subarray: " + windowSize);
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
     }
+
+    //Minimum Size Subarray Sum
+
+    //Given an array of positive integers, nums, and a positive integer, target, find the minimum length of a contiguous subarray whose sum is greater than or equal to the target. If no such subarray is found, return 0.
+
+
+    public static int minSubArrayLen(int target, int[] nums) {
+
+        // Replace this placeholder return statement with your code
+
+        int left=0,right=0;
+        int minLengh=nums.length+1;
+        int sum=nums[0];
+        while(left<nums.length){
+
+            if(sum<target && right<nums.length-1){
+                right++;
+                sum=sum+nums[right];
+            }else{
+                if(sum>=target  && right-left+1<minLengh){
+                    minLengh=right-left+1;
+                }
+                sum=sum-nums[left];
+                left++;
+
+            }
+        }
+
+
+        return  minLengh==nums.length+1?0:minLengh;
+    }
+
+
+    //Longest Substring without Repeating Characters Given a string, str, return the length of the longest substring without repeating characters.
+
+    public static int findLongestSubstringBetter(String str) {
+
+        int left=0,right=0;
+        Map<Character,Integer> counts=new HashMap<>();
+        int longestString=0;
+
+        for(right=0;right<str.length();right++){
+            char c=str.charAt(right);
+
+            if(!counts.containsKey(c) ){
+                counts.put(c,right);
+            }else{
+               int oldIndex=counts.get(c);
+
+                if( counts.get(c)>= left){
+
+                    if(longestString<right-left){
+                        longestString=right-left;
+                    }
+                    left=oldIndex+1;
+               }
+
+                counts.replace(c,right);
+            }
+
+
+
+        }
+        if(longestString<right-left){
+            longestString=right-left;
+        }
+        // Replace this placeholder return statement with your code
+        return longestString;
+    }
+
+
+    //Longest Substring without Repeating Characters Given a string, str, return the length of the longest substring without repeating characters.
+
+    public static int findLongestSubstring(String str) {
+
+        int left=0,right=0;
+        Map<Character,Integer> counts=new HashMap<>();
+        String longestString="";
+
+        for(right=0;right<str.length();right++){
+            char c=str.charAt(right);
+            int ccount=counts.getOrDefault(c,0);
+            if(ccount>=1 ){
+                if( longestString.length() < right-left){
+                    longestString=str.substring(left,right);
+                }
+                char cleft=str.charAt(left);
+                while(cleft!=c){
+                    counts.put(cleft,counts.get(cleft)-1);
+                    left++;
+                    cleft=str.charAt(left);
+                 }
+                left++;
+
+            }else{
+                counts.put(c,ccount+1);
+            }
+
+
+
+        }
+        if( longestString.length() < right-left){
+            longestString=str.substring(left,right);
+        }
+        // Replace this placeholder return statement with your code
+        return longestString.length();
+    }
+
+    //Minimum Window Substring Given two strings, s and t, find the minimum window substring in s, which has the following properties:
+    public static String minWindowBet(String s, String t) {
+        // If `t` is empty, return an empty string as no window is possible
+        if (t.isEmpty()) {
+            return "";
+        }
+
+        // Maps to store the required character counts and the current window's character counts
+        Map<Character, Integer> reqCount = new HashMap<>();
+        Map<Character, Integer> window = new HashMap<>();
+
+        // Populate `reqCount` with the character frequencies of `t`
+        for (char c : t.toCharArray()) {
+            reqCount.put(c, reqCount.getOrDefault(c, 0) + 1);
+        }
+
+        // Variables to track the number of characters that match the required frequencies
+        int current = 0; // Count of characters in the current window that meet the required frequency
+        int required = reqCount.size(); // Total number of unique characters in `t`
+
+        // Result variables to track the best window
+        int[] res = {-1, -1}; // Stores the start and end indices of the minimum window
+        int resLen = Integer.MAX_VALUE; // Length of the minimum window
+
+        // Sliding window pointers
+        int left = 0; // Left pointer of the window
+        for (int right = 0; right < s.length(); right++) {
+            char c = s.charAt(right);
+
+            // If `c` is in `t`, update the window count
+            if (reqCount.containsKey(c)) {
+                window.put(c, window.getOrDefault(c, 0) + 1);
+                // If the frequency of `c` in the window matches the required frequency, update `current`
+                if (window.get(c).equals(reqCount.get(c))) {
+                    current++;
+                }
+            }
+
+            // Try to contract the window while all required characters are present
+            while (current == required) {
+                // Update the result if the current window is smaller than the previous best
+                if ((right - left + 1) < resLen) {
+                    res[0] = left;
+                    res[1] = right;
+                    resLen = (right - left + 1);
+                }
+
+                // Shrink the window from the left
+                char leftChar = s.charAt(left);
+                if (reqCount.containsKey(leftChar)) {
+                    // Decrement the count of `leftChar` in the window
+                    window.put(leftChar, window.get(leftChar) - 1);
+                    // If the frequency of `leftChar` in the window is less than required, update `current`
+                    if (window.get(leftChar) < reqCount.get(leftChar)) {
+                        current--;
+                    }
+                }
+                left++; // Move the left pointer to shrink the window
+            }
+        }
+
+        // Return the minimum window if found, otherwise return an empty string
+        return res[0] == -1 ? "" : s.substring(res[0], res[1] + 1);
+    }
+
+    public static String minWindowSubstring(String s, String t) {
+
+        Map<Character,Integer> reqCount=new HashMap<>();
+        Map<Character,Integer> window=new HashMap<>();
+        int left=0;
+        int[] res=new int[]{-1,-1};
+
+        for(char ch:t.toCharArray()){
+            reqCount.put(ch,reqCount.getOrDefault(ch,0)+1);
+
+        }
+
+        int required=reqCount.size();
+        int current=0;
+        int resLegth=s.length()+1;
+
+        for(int right=0;right<s.length();right++){
+            char c=s.charAt(right);
+
+            if(reqCount.containsKey(c)){
+                window.put(c,window.getOrDefault(c,0)+1);
+                if(window.get(c)==reqCount.get(c)){
+                    current++;
+                }
+            }
+
+            while(required==current){
+                if(resLegth > right-left+1) {
+                    res[0] = left;
+                    res[1] = right;
+                    resLegth = right - left + 1;
+                }
+
+
+                // remove out of window
+                if(window.containsKey(s.charAt(left))){
+                    window.put(s.charAt(left),window.getOrDefault(s.charAt(left),0)-1);
+
+                    if(window.get(s.charAt(left))<reqCount.get(s.charAt(left))){
+                        current--;
+                    }
+                }
+
+                left++;
+
+            }
+    }
+            // Replace this placeholder return statement with your code
+
+        return res[0]!=-1?s.substring(res[0],res[1]+1):"";
+    }
+
+
+
+
     //Longest Repeating Character Replacement
     public static int longestRepeatingCharacterReplacementBetter(String s, int k) {
         // Replace this placeholder return statement with your code
@@ -102,6 +385,7 @@ public class SlidingWIndow {
         return lengthfMaxSubstring;
 
     }
+
 
     //Longest Repeating Character Replacement
     public static int longestRepeatingCharacterReplacement(String s, int k) {
