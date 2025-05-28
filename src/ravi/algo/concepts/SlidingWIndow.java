@@ -1,5 +1,6 @@
 package ravi.algo.concepts;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -127,14 +128,317 @@ public class SlidingWIndow {
                 {5, 4, 9, 8, 11, 3, 7, 12, 15, 44}
         };
         for (int i = 0; i < target.length; i++) {
-            int windowSize = minSubArrayLen(target[i], inputArr[i]);
+            int windowSize = minSubArrayLenBetter(target[i], inputArr[i]);
             System.out.print((i + 1) + ".\tInput array: " + Arrays.toString(inputArr[i]));
             System.out.print("\n\tTarget: " + target[i]);
             System.out.println("\n\tMinimum Length of Subarray: " + windowSize);
             System.out.println(new String(new char[100]).replace('\0', '-'));
         }
 
+        //Minimum Size Subarray Sum
+
+        //Given an array of positive integers, nums, and a positive integer, target, find the minimum length of a contiguous subarray whose sum is greater than or equal to the target. If no such subarray is found, return 0.
+
+
+        int[][] inputData = {
+                {10, 5, 2, -1, 6, 3, -2, -4, 4, 1, -3, -6, -1, -2, -5, -7},
+                {7, 3, 1, -2, 6, 2, -1, -3, 4, 1, -2, -5, 2, 0, -4, -6},
+                {12, 9, 5, 2, 8, 6, 4, 1, 7, 5, 3, 0, 4, 2, 0, -3},
+                {-10, -11, -12, -13, -20, -21, -22, -23, -30, -31, -32, -33, -40, -41, -42, -43},
+                {5, 3, -2, -3, 4, 2, -3, -4, 3, 1, -4, -5, 2, 0, -5, -6}
+        };
+
+        int k1 = 4;
+
+        for (int i = 0; i < inputData.length; i++) {
+            int[] nums = inputData[i];
+            double result = findMaxAverage(nums, k1);
+            System.out.print((i + 1) + ".\tInput: nums = {");
+            for (int num : nums) {
+                System.out.print(num + " ");
+            }
+            System.out.println("}, k = " + k1);
+            System.out.printf("\tMaximum Average: %.2f%n", result);
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+        //Diet Plan Performance
+        List<List<Integer>> testCasesDient = Arrays.asList(
+                Arrays.asList(3, 5, 8, 2, 6),     // Test Case 1: Mixed performance
+                Arrays.asList(1, 1, 1, 1, 1),     // Test Case 2: All sums below lower limit
+                Arrays.asList(10, 12, 15, 20, 25), // Test Case 3: All sums above upper limit
+                Arrays.asList(5, 10, 15, 20, 25, 30), // Test Case 4: Mix of poor, normal, and good performances
+                Arrays.asList(3, 8, 7, 4, 5, 6)   // Test Case 5: Sliding window with variable performance
+        );
+
+        int[] ks = {2, 2, 3, 3, 2};
+        int[] lowers = {7, 5, 10, 20, 7};
+        int[] uppers = {10, 10, 30, 40, 10};
+
+        // Run each test case
+        for (int i = 0; i < testCasesDient.size(); i++) {
+            System.out.println("Test Case " + (i + 1) + ":");
+            System.out.print("\tcalories = [");
+            String sDiet = "";
+            for (int j = 0; j < testCasesDient.get(i).size(); j++) {
+                sDiet += testCasesDient.get(i).get(j);
+                if (j != testCasesDient.get(i).size() - 1) {
+                    sDiet += ", ";
+                }
+            }
+            System.out.println(sDiet + "]");
+            System.out.println("\tk = " + ks[i]);
+            System.out.println("\tlower = " + lowers[i]);
+            System.out.println("\tupper = " + uppers[i]);
+            int result = dietPlanPerformance(testCasesDient.get(i), ks[i], lowers[i], uppers[i]);
+            System.out.println("\n\tpoints = " + result);
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+        //Fruit Into Baskets
+        int[][] fruits = {{3,4,2,1,3,2},
+                {2,2,2,3,1,2,4,4,4,4},
+                {1,1,1,1,1,1,1,1,1,1},
+                {2,3,4,1,3,3,1,2,3,4,1,5,2,5,7,7},
+                {5,4,3,2,1,1}};
+
+        for (int i = 0; i < fruits.length; i++) {
+            System.out.print((i + 1) + ".\tFruits: [");
+            for (int j = 0; j < fruits[i].length; j++) {
+                if (j > 0) System.out.print(", ");
+                System.out.print(fruits[i][j]);
+            }
+            System.out.println("]");
+            System.out.println("\n\tMaximum number of fruit(s) collected: " + totalFruit(fruits[i]));
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+
+
+        //Contains Duplicate II You are given an integer array, nums, and an integer k. Determine whether two distinct indices, i and j, are in the array, such that nums[i] == nums[j] and the absolute difference between i and j is at most k. Return TRUE if such indices exist; otherwise, return FALSE.
+
+
+        int[][] arrs = {
+                {7, 8, 6, 7, 9},
+                {-1, 2, -3, 4, -5},
+                {900},
+                {9, -6, 3, 0, -3, 6, 9},
+                {-1000, 1000}
+        };
+
+        int[] ksd = {3, 5, 1, 6, 10000};
+
+        for (int i = 0; i < arrs.length; i++) {
+            System.out.print((i + 1) + ".\tarr: [");
+            for (int j = 0; j < arrs[i].length; j++) {
+                System.out.print(arrs[i][j]);
+                if (j < arrs[i].length - 1)
+                    System.out.print(", ");
+            }
+            System.out.println("]");
+            System.out.println("\tk: " + ksd[i]);
+            System.out.println("\n\tDo duplicates exist? " + (containsNearbyDuplicateB(arrs[i], ksd[i]) ? "Yes" : "No"));
+            System.out.println(String.join("", Collections.nCopies(100, "-")));
+        }
+
+        // Frequency of the Most Frequent Element
+
+        int[][] testCasesF = {
+                {4,6,8,10},
+                {1, 4, 8, 13},
+                {3, 6, 9},
+                {2, 3, 5},
+                {1, 1, 2},
+                {4, 6, 8, 10},
+                {10, 12, 5, 1, 15, 20, 13, 4, 7, 3, 9, 14, 2, 8, 6, 16, 11, 18, 19, 17},
+                {5, 5, 5, 5, 6, 7, 8, 9, 10, 10, 10, 10, 10, 11, 12, 13, 14, 15, 16, 17}
+        };
+        int[] kValues = {7, 5, 2, 3, 2, 7, 50, 30};
+
+        for (int i = 0; i < testCasesF.length; i++) {
+            System.out.println((i + 1) + ".\tnums = " + Arrays.toString(testCasesF[i]));
+            System.out.println("\tk = " + kValues[i]);
+            System.out.println("\n\tOutput = " + maxFrequency(testCasesF[i], kValues[i]));
+            System.out.println("-" + new String(new char[100]).replace('\0', '-') + "\n");
+        }
+
     }
+
+    // Frequency of the Most Frequent Element
+    public static int maxFrequency(int[] nums, int k) {
+        Arrays.sort(nums);
+        int maxLenght=0;
+        int right=0,left=0;
+        int sum=0;
+        for(;right<nums.length;right++){
+
+            int target=nums[right];
+            sum+=nums[right];
+            while((right-left+1)*target>sum+k ){
+                sum-=nums[left];
+                left++;
+            }
+            maxLenght=Math.max(maxLenght,right-left+1);
+        }
+
+        // Replace this placeholder return statement with your code
+        return maxLenght;
+    }
+
+
+    //Contains Duplicate II You are given an integer array, nums, and an integer k. Determine whether two distinct indices, i and j, are in the array, such that nums[i] == nums[j] and the absolute difference between i and j is at most k. Return TRUE if such indices exist; otherwise, return FALSE.
+
+    public static boolean containsNearbyDuplicateB(int[] nums, int k) {
+        Set<Integer> seen=new HashSet<>();
+
+        int left=0;
+        for(int right=0;right<nums.length;right++){
+            if(seen.contains(nums[right])){
+                return true;
+            }else{
+                seen.add(nums[right]);
+            }
+            if(seen.size()>k){
+                seen.remove(nums[left]);
+                left++;
+            }
+        }
+        // Replace this placeholder return statement with your code
+        return false;
+    }
+
+//Contains Duplicate II You are given an integer array, nums, and an integer k. Determine whether two distinct indices, i and j, are in the array, such that nums[i] == nums[j] and the absolute difference between i and j is at most k. Return TRUE if such indices exist; otherwise, return FALSE.
+
+    public static boolean containsNearbyDuplicate(int[] nums, int k) {
+    Map<Integer,Integer> map=new HashMap<>();
+    for(int i=0;i<nums.length;i++){
+        if(map.get(nums[i])!=null){
+            if(i-map.get(nums[i])<=k){
+                return true;
+            }
+        }else{
+            map.put(nums[i], i);
+        }
+
+    }
+        // Replace this placeholder return statement with your code
+        return false;
+    }
+
+
+    //Fruit Into Baskets
+
+    public static int totalFruit(int[] fruits) {
+
+
+        int left=0;
+        Map<Integer,Integer> map=new HashMap<>();
+        int bucket=2;
+        int totalBucketSize=0;
+
+
+        for(int right=0;right<fruits.length;right++){
+
+            map.put(fruits[right],map.getOrDefault(fruits[right],0)+1);
+            totalBucketSize+=1;
+
+            if(map.size()>bucket){
+                map.put(fruits[left],map.getOrDefault(fruits[left],0)-1);
+                if(map.getOrDefault(fruits[left],0)==0){
+                    map.remove(fruits[left]);
+                }
+                totalBucketSize-=1;
+                left++;
+
+            }
+            if(right-left+1>totalBucketSize){
+                totalBucketSize=right-left+1;
+            }
+
+        }
+        // Replace this placeholder return statement with your code
+        return totalBucketSize;
+    }
+
+
+    //Diet Plan Performance
+
+    public static int dietPlanPerformance(List<Integer> calories, int k, int lower, int upper) {
+
+        int sum=0;
+        int points=0;
+        for(int i=0;i<k;i++){
+            sum=sum+calories.get(i);
+        }
+        if (sum > upper) {
+            points=points+1;
+        }else if (sum<lower){
+            points=points-1;
+        }
+
+        for(int right=k;right<calories.size();right++){
+            sum=sum+calories.get(right)-calories.get(right-k);
+            if (sum > upper) {
+                points=points+1;
+            }else if (sum<lower){
+                points=points-1;
+            }
+        }
+
+        // Replace this placeholder return statement with your code
+        return points;
+    }
+
+    //Minimum Size Subarray Sum
+
+    //Given an array of positive integers, nums, and a positive integer, target, find the minimum length of a contiguous subarray whose sum is greater than or equal to the target. If no such subarray is found, return 0.
+
+    //Maximum Average Subarray I  Given an array of integers nums, and an integer k, return the maximum average of a contiguous subarray of length k.
+    public static double findMaxAverage(int[] nums, int k) {
+        int left=0;
+        double sum=0;
+        for(int i=0;i<k;i++){
+            sum+=nums[i];
+        }
+        double average= sum/k;
+
+        for(int right=k;right<nums.length;right++){
+            sum=sum+nums[right]-nums[left];
+            double tempAverage= sum/k;
+            average= Math.max(tempAverage,average);
+            left++;
+        }
+          // Replace this placeholder return statement with your code
+        return average;
+    }
+
+
+
+    public static int minSubArrayLenBetter(int target, int[] nums) {
+
+        // Replace this placeholder return statement with your code
+
+        int left=0;
+        int minLengh=Integer.MAX_VALUE;
+        int sum=0;
+
+        for(int right=0;right<nums.length;right++){
+            sum+=nums[right];
+            while(sum>=target){
+
+                int length=right-left+1;
+                minLengh=Math.min(minLengh,length);
+                sum-=nums[left];
+                left++;
+            }
+
+        }
+
+
+        return  minLengh==Integer.MAX_VALUE?0:minLengh;
+    }
+
+
 
     //Minimum Size Subarray Sum
 
