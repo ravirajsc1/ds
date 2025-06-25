@@ -262,7 +262,102 @@ public class SlidingWIndow {
             System.out.println("-" + new String(new char[100]).replace('\0', '-') + "\n");
         }
 
+
+//        Subarrays with K Different Integers
+
+        int[][] tc = {
+                {1, 2, 3, 4, 5},
+                {1},
+                {1, 2, 3, 4, 5},
+                {1, 2, 1, 2, 3},
+                {1, 2, 1, 3, 4}
+        };
+
+        int[] kstc = {3, 1, 3, 2, 3};
+
+
+        for (int i = 0; i < tc.length; i++) {
+            int result = subarraysWithKDistinct(tc[i], kstc[i]);
+            System.out.println((i + 1) + ".\tnums: " + Arrays.toString(tc[i]) + ", k: " + kstc[i]);
+            System.out.println("\tresult: " + result);
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+
+
+
     }
+
+    public static int subarraysWithKDistinctBetter(int[] nums, int k) {
+        return atMostK(nums,k)-atMostK(nums,k-1);
+    }
+    // Subarrays with K Different Integers better
+    public static int atMostK(int[] nums, int k) {
+        Map<Integer,Integer> map=new HashMap<>();
+        int start=0,end=0,count=0;
+        for(end=0;end<nums.length;end++){
+            map.put(nums[end],map.getOrDefault(nums[end],0)+1);
+            if(map.get(nums[end])==1){
+                k--;
+            }
+
+            while(k<0){
+                map.put(nums[start],map.getOrDefault(nums[start],0)-1);
+                if(map.get(nums[start])==0){
+                    k++;
+                }
+                start++;
+            }
+
+            count+=end-start+1;
+        }
+
+
+        return count;
+    }
+
+// Subarrays with K Different Integers
+
+    public static int subarraysWithKDistinct(int[] nums, int k) {
+        // Replace this placeholder return statement with your code
+
+        List<int[]> result=new ArrayList<>();
+        Map<Integer,Integer> map=new HashMap<>();
+        int start=0,end=0;
+        //   set.add(nums[start]);
+        while(end<nums.length){
+
+            map.put(nums[end],map.getOrDefault(nums[end],0)+1);
+            if(map.size()>k){
+                map.put(nums[start],map.getOrDefault(nums[start],0)-1);
+                if(map.getOrDefault(nums[start],0)<=0){
+                    map.remove(nums[start]);
+                }
+                start++;
+            }
+            while(start<=end & map.size()==k){
+
+                int[] temp2 = new int[]{start, end};
+                result.add(temp2);
+                map.put(nums[start],map.getOrDefault(nums[start],0)-1);
+                if(map.getOrDefault(nums[start],0)<=0){
+                    map.remove(nums[start]);
+                }
+                start++;
+            }
+            end++;
+        }
+        return result.size();
+
+
+    }
+
+
+
+    //  public static int subarraysWithKDistinct(int[] nums, int k) {
+    //        // Replace this placeholder return statement with your code
+    //        return -1;
+    //    }
 
     // Frequency of the Most Frequent Element
     public static int maxFrequency(int[] nums, int k) {
