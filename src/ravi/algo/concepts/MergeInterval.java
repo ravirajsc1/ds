@@ -188,17 +188,55 @@ public class MergeInterval {
             int result = removeCoveredIntervals(intervals);
             System.out.println("\tResult: " + result);
             System.out.println(new String(new char[100]).replace("\0", "-"));
+
+            int resultSet = findSets(intervals);
+            System.out.println("\tResult for find set: " + resultSet);
+            System.out.println(new String(new char[100]).replace("\0", "-"));
+
         }
+
 
     }
 
-    // Remove Covered Intervals
+
+    // find set
+    public static int findSets(int[][] intervals) {
+        Arrays.sort(intervals,Comparator.comparingInt(a->a[0]));
+        PriorityQueue<Integer> minHeap=new PriorityQueue<>();
+
+        for(int[] interval:intervals){
+            if(!minHeap.isEmpty() && interval[0]>=minHeap.peek()){
+                minHeap.poll();
+            }
+            minHeap.offer(interval[1]);
+
+        }
+
+        // Replace this placeholder return statement with your code
+        return minHeap.size();
+    }
+
+
+        // Remove Covered Intervals
 
     public static int removeCoveredIntervals(int[][] intervals)
     {
+        Arrays.sort(intervals,Comparator.comparingInt((int[] a)-> a[0]).thenComparingInt(a->-a[1]));
+
+        int count=1;
+        int maxEnd=intervals[0][1];
+        int i=1;
+        while(i< intervals.length){
+            if(maxEnd<intervals[i][1]){
+                count+=1;
+                maxEnd=intervals[i][1];
+            }
+
+            i++;
+        }
 
         // Replace this placeholder return statement with your code
-        return 0;
+        return count;
     }
     // Count Days Without Meetings
 
