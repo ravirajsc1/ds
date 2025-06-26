@@ -2,6 +2,7 @@ package ravi.algo.concepts;
 
 import java.rmi.StubNotFoundException;
 import java.util.*;
+import java.util.LinkedList;
 
 public class MergeInterval {
 
