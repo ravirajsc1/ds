@@ -131,8 +131,392 @@ public class InPlaceLinkedListManpulation {
             System.out.println();
             System.out.println(new String(new char[100]).replace('\0', '-'));
         }
+
+/// Remove Duplicates from Sorted List
+        List<List<Integer>> inputListD = Arrays.asList(
+                Arrays.asList(1, 2, 2, 3, 3, 3),
+                Arrays.asList(-21, -21, -21, -21, -21, -21, -21),
+                Arrays.asList(3, 7, 9),
+                Arrays.asList(-100, -100, -100, -10, -10, 0, 10, 10, 100, 100, 100),
+                Arrays.asList(-77, -77, -7, -7, -7, -7, 7, 7, 7, 7, 77, 77, 77, 77)
+        );
+
+        for (int i = 0; i < inputListD.size(); i++) {
+            LinkedList inputLinkedListD = new LinkedList(inputListD.get(i));
+
+            System.out.print((i + 1) + ".\tInput: ");
+            PrintList.display(inputLinkedListD.head);
+
+            System.out.print("\n\tOutput: ");
+            inputLinkedListD.head = removeDumpSecond(inputLinkedListD.head);
+            PrintList.display(inputLinkedListD.head);
+
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+        //Remove Linked List Elements
+
+        List<List<Integer>> lists = Arrays.asList(
+                Arrays.asList(9, 7, 8, 7, 7, 6),
+                Arrays.asList(2, 3, 5, 7, 11),
+                Arrays.asList(4, 4, 4, 4, 4),
+                Arrays.asList(1, 2, 3, 11, 22, 33),
+                Arrays.asList(1, 2, 6, 3, 4, 5, 6)
+        );
+
+        int[] ksr = {7, 8, 4, 3, 6};
+
+        for (int i = 0; i < lists.size(); i++) {
+            LinkedList inputLinkedListR = new LinkedList(lists.get(i));
+
+            System.out.print((i + 1) + ".\tLinked list: ");
+            PrintList.display(inputLinkedListR.head);
+
+            System.out.println("\n\tk: " + ksr[i]);
+
+            System.out.print("\tLinked list after removing elements: ");
+            ListNode res = removeElementsAltnerate(inputLinkedListR.head, ksr[i]);
+            PrintList.display(res);
+            System.out.println("\n");
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+        List<List<Integer>> listssplit = Arrays.asList(
+                Arrays.asList(1,2,3,4,5,6,7,8,9,10),
+                Arrays.asList(9, 7, 8, 7, 7, 6),
+                Arrays.asList(4, 4, 4, 4, 4),
+                Arrays.asList(1, 2, 3, 11, 22, 33),
+                Arrays.asList(1, 2, 6, 3, 4, 5, 6)
+        );
+
+        int[] ksSplit = {4, 7, 4, 3, 6};
+
+        for (int i = 0; i < listssplit.size(); i++) {
+            LinkedList inputLinkedListSplit = new LinkedList(listssplit.get(i));
+            System.out.print((i + 1) + ". \tLinked list: ");
+            PrintList.display(inputLinkedList.head);
+
+            System.out.println("\n\tk: " + ksSplit[i]);
+            ListNode[] result = splitListToParts(inputLinkedListSplit.head, ksSplit[i]);
+
+            System.out.print("\tLinked list parts: [");
+            for (int j = 0; j < result.length; j++) {
+                if (result[j] != null) {
+                    System.out.print("[");
+                    ListNode part = result[j];
+                    while (part != null) {
+                        System.out.print(part.value);
+                        if (part.next != null) System.out.print(", ");
+                        part = part.next;
+                    }
+                    System.out.print("]");
+                } else {
+                    System.out.print("[]");
+                }
+                if (j < result.length - 1) System.out.print(", ");
+            }
+            System.out.println("]");
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+
+// Delete N Nodes After M Nodes of a Linked List
+        List<List<Integer>> inputListsDelete = Arrays.asList(
+                Arrays.asList(5),
+                Arrays.asList(1, 2, 2, 3, 3, 3),
+                Arrays.asList(3, 7, 9),
+                Arrays.asList(10, 10, 100, 100, 100),
+                Arrays.asList(7, 7, 7, 7, 77, 77, 77, 77)
+        );
+
+        int[] allMs = {1, 3, 1, 4, 5};
+        int[] allNs = {1, 1, 3, 2, 7};
+
+        for (int i = 0; i < inputListsDelete.size(); i++) {
+            LinkedList inputLinkedListDelete = new LinkedList(inputListsDelete.get(i));
+
+            System.out.println((i + 1) + ".\tInput:");
+            System.out.print("\t");
+            PrintList.display(inputLinkedListDelete.head);
+            System.out.println("\tm = " + allMs[i]);
+            System.out.println("\tn = " + allNs[i]);
+
+            inputLinkedList.head = deleteNodes(inputLinkedListDelete.head, allMs[i], allNs[i]);
+            System.out.println("\n\tOutput:");
+            System.out.print("\t");
+            PrintList.display(inputLinkedListDelete.head);
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+        // Insert into a Sorted Circular Linked List
+
+        List<List<Integer>> inputListsED = Arrays.asList(
+                Arrays.asList(3, 4, 1),
+                Arrays.asList(),
+                Arrays.asList(1),
+                Arrays.asList(2, 2, 2),
+                Arrays.asList(5, 1, 3)
+        );
+
+        List<Integer> insertVals = Arrays.asList(2, 1, 0,3, 6);
+
+        for (int i = 0; i < inputListsED.size(); i++) {
+            List<Integer> lst = inputListsED.get(i);
+            int insertVal = insertVals.get(i);
+
+            EduLinkedList inputLinkedListED = new EduLinkedList(lst);
+            System.out.print((i + 1) + ". \tInput linked list: ");
+            EduLinkedList.display(inputLinkedListED.head, 20);
+
+            System.out.println("\tValue to insert: " + insertVal);
+
+            System.out.print("\n\tUpdated linked list: ");
+
+            EduLinkedList.display(insert(inputLinkedListED.head, insertVal), 20);
+
+            System.out.println(String.join("", Collections.nCopies(100, "-")));
+        }
+
     }
 
+
+    //
+    public static ListNode swapPairs(ListNode head) {
+
+        // Replace this placeholder return statement with your code
+        if(head==null){
+            return head;
+        }
+        ListNode dummy=new ListNode(0);
+        dummy.next=head;
+        ListNode prev=dummy;
+        ListNode curr=head;
+        ListNode next=curr.next;
+        while(curr!=null && next!=null){
+            next=curr.next;
+            ListNode temp=next.next;
+            prev.next=next;
+            next.next=curr;
+            curr.next=temp;
+            prev=curr;
+            curr=curr.next;
+
+        }
+        return dummy.next;
+    }
+
+
+    // Insert into a Sorted Circular Linked List
+
+    public static ListNode insert(ListNode head, int insertVal)
+    {
+        ListNode listNode=new ListNode(insertVal);
+        if(head==null){
+            listNode.next=listNode;
+            head=listNode;
+            return head;
+        }
+
+        boolean flag = false;
+        ListNode curr=head.next;
+        ListNode prev=head;
+        while (true) {
+            if(prev.value <= insertVal && insertVal<= curr.value){
+                flag=true;
+            }else if(prev.value > curr.value & (insertVal>prev.value || insertVal<curr.value)){
+                flag=true;
+            }
+
+            if(flag){
+                prev.next=listNode;
+                listNode.next=curr;
+               return head;
+            }
+
+            prev=curr;
+            curr=curr.next;
+
+            if(curr==head){
+                break;
+            }
+
+
+        }
+
+        prev.next=listNode;
+        listNode.next=curr;
+
+
+
+       return head;
+
+    }
+
+// Delete N Nodes After M Nodes of a Linked List
+
+    public static ListNode deleteNodes(ListNode head, int m, int n) {
+
+        // Replace this placeholder return statement with your code
+        if(head==null){
+            return null;
+        }
+
+        ListNode curr=head;
+
+        while(curr!=null){
+
+            for(int i=1;i<m && curr!=null ;i++){
+                curr=curr.next;
+             }
+
+            if(curr==null)
+                break;
+
+
+            ListNode temp=curr.next;
+            for(int i=0;i<n && temp!=null;i++){
+                temp=temp.next;
+            }
+           curr.next=temp;
+           curr=temp;
+        }
+
+        return head;
+    }
+
+    // slit into part of k
+    public static ListNode[] splitListToParts(ListNode head, int k) {
+        int size=0;
+
+        ListNode curr=head;
+        while(curr!=null){
+            curr=curr.next;
+            size++;
+        }
+
+
+        int remaining=size%k;
+        int blockSize=size/k;
+        // Replace this placeholder return statement with your code
+        ListNode[] ansArray = new ListNode[k];
+        curr=head;
+        ListNode prev=null;
+        for(int i=0;i<k;i++){
+            ansArray[i]=curr;
+            int newBlockSize=0;
+            if(remaining>0){
+                newBlockSize=blockSize+1;
+                remaining--;
+            }else{
+                newBlockSize=blockSize;
+            }
+
+            for(int j=0;j<newBlockSize;j++){
+                if(curr==null){
+                    break;
+                }
+                prev=curr;
+                curr=curr.next;
+
+            }
+
+            if (prev != null) {
+                prev.next = null;
+            }
+
+
+        }
+
+
+        return ansArray;
+    }
+
+
+    //Remove Linked List Elements
+    public static ListNode removeElementsAltnerate(ListNode head, int k) {
+
+
+            if(head==null){
+                return head;
+            }
+            ListNode dummy = new ListNode(0);
+            dummy.next=head;
+            ListNode prev=dummy;
+            ListNode curr=head;
+            while (curr != null) {
+                if (k== curr.value) {
+                    prev.next = curr.next;
+                } else {
+                    prev=curr;
+                }
+                curr = curr.next;
+            }
+
+            // Replace this placeholder return statement with your code
+            return head;
+
+
+    }
+
+    //Remove Linked List Elements
+    public static ListNode removeElements(ListNode head, int k) {
+
+        {
+            if(head==null){
+                return head;
+            }
+            ListNode curr = head;
+
+            while (curr != null && curr.next != null) {
+                if (k== curr.next.value) {
+                    curr.next = curr.next.next;
+                } else {
+                    curr = curr.next;
+                }
+            }
+
+            if(head.value==k){
+                head=null;
+            }
+
+            // Replace this placeholder return statement with your code
+            return head;
+        }
+
+    }
+    //Remove Duplicates from Sorted List
+    public static ListNode removeDuplicates(ListNode head)
+    {
+        ListNode curr=head;
+
+       while(curr!=null && curr.next!=null){
+           if(curr.value==curr.next.value){
+               curr.next=curr.next.next;
+           }else{
+               curr=curr.next;
+           }
+       }
+        // Replace this placeholder return statement with your code
+        return head;
+    }
+
+    public static ListNode removeDumpSecond(ListNode head) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode prev = dummy, curr = head;
+
+        while (curr != null) {
+            if (curr.value == prev.value) {
+                prev.next = curr.next;
+                curr = curr.next;
+            } else {
+                prev = curr;
+                curr = curr.next;
+            }
+        }
+
+        return dummy.next;
+    }
 
 
     // Reverse Nodes in Even Length Groups
