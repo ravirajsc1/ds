@@ -167,15 +167,122 @@ public class KWayMerge {
                         {27, 29, 31, 33, 35, 37},
                         {30, 32, 34, 36, 38, 40}}};
 
-        int [] k = {3, 4, 1, 10, 15};
-        for(int i=0; i<k.length; i++){
+        int [] ksm = {3, 4, 1, 10, 15};
+        for(int i=0; i<ksm.length; i++){
             System.out.print(i+1);
             System.out.println(".\tInput matrix: "+ Arrays.deepToString(matrix[i]));
-            System.out.println("\tK =  "+k[i]);
-            System.out.println("\tKth smallest number in the matrix is: "+kthSmallestElement(matrix[i], k[i]));
+            System.out.println("\tK =  "+ksm[i]);
+            System.out.println("\tKth smallest number in the matrix is: "+kthSmallestElement(matrix[i], ksm[i]));
             System.out.println(new String(new char[100]).replace('\0', '-'));
         }
 
+        // kth-smallest-prime-fraction
+
+        int[][] testCases = {
+                {1, 3, 5, 7, 9, 11},
+                {1, 7, 23, 29, 47},
+                {1, 2, 3, 5},
+                {1, 2, 3, 5},
+                {1, 13, 17, 19, 23, 29, 31}
+        };
+        int[] ks = {2, 3, 3, 1, 4};
+
+        for (int i = 0; i < testCases.length; i++) {
+            System.out.println((i + 1) + ".\tArray: " + Arrays.toString(testCases[i]) + ", k: " + ks[i]);
+            int[] result = kthSmallestPrimeFraction(testCases[i], ks[i]);
+            System.out.println("\tKth smallest prime fraction is: [" + result[0] + ", " + result[1] + "]");
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+        int[] nValues = {12, 1, 15, 10, 8};
+        int[][] primesList = {
+                {2, 7, 13, 19},
+                {2, 3, 5},
+                {3, 5, 7},
+                {2, 5, 11},
+                {3, 11, 17}
+        };
+
+        for (int i = 0; i < nValues.length; i++) {
+            System.out.println((i+1)+ ".\tn: " + nValues[i]);
+            System.out.println("\tprimes: "+ Arrays.toString(primesList[i]));
+            int result = nthSuperUglyNumber(nValues[i], primesList[i]);
+            System.out.println("\n\t" + nValues[i] + "th super ugly number is " + result);
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+    }
+
+
+    // Super Ugly Number
+
+    public static int nthSuperUglyNumber(int n, int[] primes) {
+
+        PriorityQueue<long[]> minHeap=new PriorityQueue<>(Comparator.comparingLong(a->a[0]));
+
+        for(int i=0;i<primes.length;i++){
+            minHeap.offer(new long[]{primes[i],primes[i],0});
+        }
+
+        List<Integer> ugly=new ArrayList<>();
+        ugly.add(1);
+
+        while(ugly.size()<n){
+            long[] smallest=minHeap .poll();
+            long nexyUgly=smallest[0];
+            long prime=smallest[1];
+            int index=(int)smallest[2];
+
+            if(nexyUgly!=ugly.get(ugly.size()-1)){
+                ugly.add((int)nexyUgly);
+            }
+
+            minHeap.offer(new long[]{prime*ugly.get(index+1),prime,index+1});
+
+        }
+
+
+        // Replace this placeholder return statement with your code
+        return ugly.get(n-1);
+    }
+
+
+ // kth-smallest-prime-fraction
+    /*
+    When you pop a fraction arr[i]/arr[j] from the heap:
+
+You push the next row down from the same column j → which is arr[i+1]/arr[j]
+
+Since arr is sorted:
+
+arr[i+1] > arr[i]
+
+So arr[i+1]/arr[j] > arr[i]/arr[j]
+
+     */
+
+    // Any unvisited fraction will not be smaller than the smallest item currently in the heap.
+    public static int[] kthSmallestPrimeFraction(int[] arr, int k) {
+        int n=arr.length;
+        PriorityQueue<double[]> minHeap=new PriorityQueue<>(Comparator.comparingDouble(a->a[0]));
+
+        for(int i=1;i<n;i++){
+            minHeap.offer(new double[]{(double)arr[0]/arr[i],0,i});
+        }
+
+        for(int i=0;i<k-1;i++){
+            double[] smallest=minHeap.poll();
+            int numerator=(int)smallest[1];
+            int denominator=(int)smallest[2];
+
+            if(numerator+1<denominator){
+                minHeap.offer(new double[]{(double)(arr[numerator+1])/arr[denominator],numerator+1,denominator});
+            }
+
+        }
+        double[] kSmallest=minHeap.poll();
+        // Replace the following placeholder return statement with your code
+        return new int[]{arr[(int)kSmallest[1]],arr[(int)kSmallest[2]]};
     }
 
 
