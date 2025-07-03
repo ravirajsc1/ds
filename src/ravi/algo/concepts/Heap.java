@@ -160,58 +160,173 @@ public class Heap {
         };
 
         int testCaseNum = 1;
-        for (int[] testCase : testCasesHappy) {
+    /*    for (int[] testCase : testCasesHappy) {
             int a = testCase[0], b = testCase[1], ch = testCase[2];
             System.out.println(testCaseNum++ + ".\t a: " + a + ", b: " + b + ", c: " + ch);
             String result = longestDiverseString(a, b, ch);
             System.out.println("\n\t Longest Happy String: " + result);
             System.out.println(new String(new char[100]).replace("\0", "-"));
+        }*/
+
+        // Maximum Average Pass Ratio
+        int[][][] classes = {
+                {{1, 2}, {3, 5}, {2, 2}},
+                {{2, 4}, {3, 9}, {4, 5}, {2, 10}},
+                {{1, 3}, {2, 4}, {3, 6}},
+                {{5, 10}, {2, 3}, {3, 7}, {4, 8}},
+                {{10, 20}, {5, 5}, {8, 12}, {6, 15}}
+        };
+
+        int[] extra_students = {2, 4, 3, 5, 3};
+
+        for (int i = 0; i < classes.length; i++) {
+            System.out.println((i + 1) + ".\tClasses: " + Arrays.deepToString(classes[i]));
+            System.out.println("\textraStudents: " + extra_students[i]);
+            double result = maxAverageRatio(classes[i], extra_students[i]);
+            System.out.println("\n\tFinal Average Pass Ratio: " + result);
+            System.out.println(new String(new char[100]).replace('\0', '-'));
         }
+
+        int[][][] testcases = {
+                {{3, 6}, {1, 6}, {4, 5}, {2, 4}, {5, 7}},
+                {{3, 5}, {2, 6}, {1, 7}},
+                {{5, 10}, {2, 3}, {3, 8}, {1, 6}},
+                {{1, 2}, {2, 3}, {3, 4}, {4, 5}},
+                {{1, 10}, {2, 3}, {3, 4}, {4, 5}, {5, 6}}
+        };
+        int[] targetFriends = {4, 0, 3, 2, 4};
+
+        for (int i = 0; i < testcases.length; i++) {
+            int result = smallestChair(testcases[i], targetFriends[i]);
+            System.out.println((i + 1) + ".\t Times: " + Arrays.deepToString(testcases[i]) +
+                    "\n\t Target friend: " + targetFriends[i] + "\n\n\t Chair number: " + result);
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
 
     }
 
+    public static int smallestChair(int[][] times, int targetFriend) {
+
+        List<int[]> sortedFriend=new ArrayList<>();
+        for(int i=0;i<times.length;i++){
+            sortedFriend.add(new int[]{i,times[i][0],times[i][1]});
+        }
+        sortedFriend.sort(Comparator.comparingInt(a-> a[1]));
+
+        PriorityQueue<Integer> availableChair=new PriorityQueue<>();
+        PriorityQueue<int[]> occupiedChair=new PriorityQueue<>(Comparator.comparingInt(a->a[0]));
+
+        int chairIndex = 0;
+        for(int[] friend:sortedFriend){
+            int index=friend[0];
+            int arrival=friend[1];
+            int leaving=friend[2];
+
+            while(!occupiedChair.isEmpty()  && occupiedChair.peek()[0]<=arrival) {
+                    int[] freeChair=occupiedChair.poll();
+                    availableChair.offer(freeChair[1]);
+
+            }
+
+            int assignedChair;
+            if(!availableChair.isEmpty()){
+                assignedChair=availableChair.poll();
+            }else{
+                assignedChair=chairIndex;
+                chairIndex++;
+            }
+
+            occupiedChair.offer(new int[]{leaving,assignedChair});
+
+            if(index==targetFriend){
+                return assignedChair;
+            }
+
+        }
+        return -1;
+
+    }
+
+
+    public static double gain(int passes,int total){
+        return ((double)(passes+1)/(total+1))-((double)passes/total);
+    }
+
+    // Maximum Average Pass Ratio
+    public static double maxAverageRatio(int[][] classes, int extraStudents) {
+
+        PriorityQueue<double[]> maxHeap= new PriorityQueue<>((a,b)-> Double.compare(b[0],a[0]));
+
+        for(int cls[]:classes) {
+            maxHeap.offer(new double[]{gain(cls[0], cls[1]), cls[0], cls[1]});
+        }
+
+        for(int i=0;i<extraStudents;i++){
+                double[] top=maxHeap.poll();
+                int passes=(int)top[1]+1;
+                int total=(int)top[2]+1;
+                maxHeap.offer(new double[]{gain(passes,total),passes,total});
+        }
+
+        double ratio=0.0;
+        for(double[] clsHeap:maxHeap ){
+            ratio+=clsHeap[1]/clsHeap[2];
+        }
+
+        ratio=ratio/classes.length;
+
+        // Replace this placeholder return statement with your code
+        return ratio;
+    }
 
      // Longest Happy String
     public static String longestDiverseString(int a,  int b, int c)
     {
-        int total=a+b+c;
-        StringBuilder stringBuilder=new StringBuilder();
-        for(int i=0;i<total;i++){
-            if(a>2) {
-                stringBuilder.append("a");
-                stringBuilder.append("a");
-                a--;
-                a--;
-            }else if(a==1){
-                stringBuilder.append("a");
-                a--;
-            }
-            if(b>2) {
-                stringBuilder.append("b");
-                stringBuilder.append("b");
-                b--;
-                b--;
-            }else if(b==1){
-                stringBuilder.append("b");
-                b--;
+        PriorityQueue<Pair> maxHeap=new PriorityQueue<>((p1,p2)-> p2.count-p1.count);
+        if(a>0)
+            maxHeap.add(new Pair(a,'a'));
+        if(b>0)
+            maxHeap.add(new Pair(b,'b'));
+        if(c>0)
+            maxHeap.add(new Pair(c,'c'));
+
+        StringBuilder result=new StringBuilder();
+        while(!maxHeap.isEmpty()){
+            Pair pair=maxHeap.poll();
+            int len=result.length();
+            if(len>=2 && (result.charAt(len-1)==pair.ch && result.charAt(len-2)==pair.ch)){
+                if(maxHeap.isEmpty())
+                    break;
+                Pair next=maxHeap.poll();
+                result.append(next.ch);
+                if(--next.count>0){
+                    maxHeap.offer(next);
+                }
+                maxHeap.offer(pair);
+            }else{
+                result.append(pair.ch);
+                if(--pair.count>0);
+                    maxHeap.offer(pair);
             }
 
-            if(c>2) {
-                stringBuilder.append("c");
-                stringBuilder.append("c");
-                c--;
-                c--;
-            }else if(c==1){
-                stringBuilder.append("c");
-                c--;
-            }
 
         }
-        // Replace this placeholder return statement with your code
-        return stringBuilder.toString();
+
+        return result.toString();
+
+
     }
 
+    static class Pair {
+        int count;
+        char ch;
 
+        Pair(int count, char ch) {
+            this.count = count;
+            this.ch = ch;
+        }
+    }
 
     // Minimum Cost to Connect Sticks
 
