@@ -1,6 +1,7 @@
 package ravi.algo.concepts;
 import java.math.BigInteger;
 import java.util.*;
+import java.util.LinkedList;
 
 public class TopK {
     public static void main(String[] args) {
@@ -280,13 +281,312 @@ public class TopK {
             System.out.println("-".repeat(100));
         }
 
+        List<List<Integer>> arr1List = new ArrayList<>();
+        arr1List.add(Arrays.asList(1, 4, 2));
+        arr1List.add(Arrays.asList(10, 15, 30));
+        arr1List.add(Arrays.asList(1, 1, 1));
+        arr1List.add(Arrays.asList(5, 7));
+        arr1List.add(Arrays.asList(1, 2, 3));
+
+        List<List<Integer>> arr2List = new ArrayList<>();
+        arr2List.add(Arrays.asList(3, 6, 5));
+        arr2List.add(Arrays.asList(20, 25, 10));
+        arr2List.add(Arrays.asList(1, 1, 1));
+        arr2List.add(Arrays.asList(8, 3));
+        arr2List.add(Arrays.asList(4, 5, 6));
+
+        List<Integer> kList = Arrays.asList(3, 2, 2, 1, 3);
+
+        for (int i = 0; i < arr1List.size(); i++) {
+            List<Integer> arr1 = arr1List.get(i);
+            List<Integer> arr2 = arr2List.get(i);
+            int k = kList.get(i);
+
+            System.out.println((i + 1) + ".\t arr1: " + arr1 + ", arr2: " + arr2 + ", k: " + k);
+
+
+            List<Integer> result = maxCombinations(arr1, arr2, k);
+
+            System.out.println("\n\t Top " + k + " Maximum Sums: " + result);
+            System.out.println("-".repeat(100));
+        }
+
+        // K Empty Slots
+
+        int[][] testBulbs = {
+                {1, 3, 2},
+                {1, 2, 3},
+                {2, 5, 1, 4, 3},
+                {3, 1, 5, 4, 2},
+                {2, 4, 1, 3}
+        };
+
+        int[] ksb = {1, 1, 1, 1, 0};
+
+        for (int i = 0; i < testBulbs.length; i++) {
+            int[] bulbs = testBulbs[i];
+            int k = ksb[i];
+            System.out.print((i + 1) + ".\tbulbs: [ ");
+            for (int b : bulbs) System.out.print(b + " ");
+            System.out.println("], k: " + k);
+
+            int result = kEmptySlotsBetter(bulbs, k);
+            System.out.println("\tEarliest Day: " + result);
+            System.out.println("-".repeat(100));
+        }
+
+
+
+        // Maximum Product After K Increments
+        List<int[]> numsList = Arrays.asList(
+                new int[]{3, 3, 3, 3, 0},
+                new int[]{1, 2, 3},
+                new int[]{0, 0, 0, 0, 0},
+                new int[]{1, 5, 1, 1},
+                new int[]{2, 2, 2, 2}
+        );
+
+        int[] kValuesM = {1, 3, 10, 3, 4};
+
+        for (int i = 0; i < numsList.size(); i++) {
+            int[] numsM = numsList.get(i);
+            int k = kValuesM[i];
+
+            System.out.printf("%d.\tnums = %s, k = %d\n", i + 1, Arrays.toString(numsM), k);
+            int result = maximumProduct(numsM, k);
+            System.out.printf("\tMaximum Product: %d\n", result);
+            System.out.println("-".repeat(100));
+        }
 
     }
 
-    public static int[] smallestRange(List<List<Integer>> nums)
+
+
+    public static long kSum(int[] nums, int k) {
+        // Replace this placeholder return statement with your code
+        long maxSum=0L;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]>0){
+                maxSum+=nums[i];
+            }else{
+                nums[i]=-nums[i];
+            }
+        }
+
+        Arrays.sort(nums);
+        PriorityQueue<long[]> minHeap=new PriorityQueue<>(Comparator.comparingLong(a->a[0]));
+        minHeap.offer(new long[]{0L,0L});
+        for(int i=0;i<k-1;i++){
+            long[] smallest=minHeap.poll();
+            long currentSum=smallest[0];
+            int index=(int)smallest[1];
+
+            if(index<nums.length){
+                minHeap.offer(new long[]{currentSum+nums[index],index+1});
+                if(index>0){
+                    minHeap.offer(new long[]{currentSum+nums[index]-nums[index-1],index+1});
+                }
+            }
+
+        }
+
+        return maxSum-minHeap.peek()[0];
+    }
+
+
+// Maximum Product After K Increments
+
+    public static int maximumProduct(int[] nums, int k)
     {
         // Replace this placeholder return statement with your code
-        return new int[]{};
+        final int MOD = 1_000_000_007;
+        PriorityQueue<Integer> minHeap=new PriorityQueue<>();
+        for(int i=0;i<nums.length;i++){
+            minHeap.offer(nums[i]);
+        }
+        long product=1;
+        for(int i=0;i<k;i++){
+            int min=minHeap.poll();
+            minHeap.offer(min+1);
+        }
+
+        while(!minHeap.isEmpty()){
+            product=(product*minHeap.poll())/MOD;
+        }
+        return (int)product;
+    }
+
+
+    // k Empty slot
+
+
+
+// bulb 2 4 1 3
+// days 3 1 4 2
+// index 0 1 2 3
+
+    public static int kEmptySlotsBetter(int[] bulbs, int k) {
+        int n=bulbs.length;
+        int[] days=new int[n];
+
+        for(int day=0;day<n;day++){
+            days[bulbs[day]-1]=day+1;
+        }
+
+        MInHeap pq=new MInHeap();
+
+        int result=n;
+        for(int i=0;i<n;i++){
+            pq.append(days[i]);
+            if(i>=k && i< n-1){
+                pq.popleft();
+
+                if(k==0 || (days[i-k] < pq.min() && days[i+1] < pq.min())){
+                    int ans=Math.max(days[i-k],days[i+1]);
+                    result=Math.min(result,ans);
+                }
+
+            }
+        }
+
+        return result<n?result:-1;
+    }
+
+    public static int kEmptySlots(int[] bulbs, int k)
+    {
+
+        int n=bulbs.length;
+        int[] days=new int[n];
+// bulb 2 4 1 3
+// days 3 1 4 2
+// index 0 1 2 3
+
+        for(int i=0;i<n;i++){
+            days[bulbs[i]-1]=i+1;
+        }
+
+        Deque<Integer> dq=new LinkedList<>();
+        int result=Integer.MAX_VALUE;
+
+        for(int i=0;i<n;i++){
+
+            while(!dq.isEmpty() && days[dq.peekFirst()]> days[i]){
+                dq.pollFirst();
+            }
+            dq.offerFirst(days[i]);
+
+            if(i>k+1){
+                int left=i-k-1;
+                int right=i+1;
+
+                if(dq.peekFirst()==left+1){
+                    dq.pollFirst();
+                }
+
+                if(days[left]<days[dq.peekFirst()] && days[right] < days[dq.peekFirst()]){
+                    result=Math.min(result,Math.max(days[left],days[right]));
+                }
+
+
+            }
+
+        }
+
+        // Replace this placeholder return statement with your code
+        return (result==Integer.MAX_VALUE)?-1:result;
+    }
+
+    public static List<Integer> maxCombinations(List<Integer> arr1, List<Integer> arr2, int k)
+    {
+        Collections.sort(arr1,Collections.reverseOrder());
+        Collections.sort(arr2,Collections.reverseOrder());
+
+        PriorityQueue<int []> maxHeap=new PriorityQueue<>(Comparator.comparingInt((int[] a)->a[0]).reversed());
+        maxHeap.offer(new int[]{(arr1.get(0)+arr2.get(0)),0,0});
+
+        List<Integer> results=new ArrayList<>();
+        Set<String> visited = new HashSet<>();
+        visited.add("0,0");
+        while(!maxHeap.isEmpty() && k-->0){
+            int[] largest=maxHeap.poll();
+            int sum=largest[0];
+            int i=largest[1];
+            int j=largest[2];
+
+            results.add(sum);
+
+            if(i+1<arr1.size() && visited.add((i+1)+","+j)){
+                maxHeap.offer(new int[]{(arr1.get(i+1)+arr2.get(j)),i+1,j});
+            }
+
+
+            if(j+1 < arr2.size() && visited.add(i+","+(j+1))){
+                maxHeap.offer(new int[]{(arr1.get(i)+arr2.get(j+1)),i,j+1});
+            }
+
+        }
+
+
+
+        // Replace this placeholder return statement with your code
+        return results;
+    }
+
+
+    static class Element implements Comparable<Element>{
+
+        int value;
+        int listIndex;
+        int elementIndex;
+
+        public Element(int value,int listIndex,int elementIndex){
+            this.value=value;
+            this.listIndex=listIndex;
+            this.elementIndex=elementIndex;
+        }
+        @Override
+        public int compareTo(Element o) {
+            return Integer.compare(this.value,o.value);
+        }
+    }
+    public static int[] smallestRange(List<List<Integer>> nums)
+    {
+
+        int maxVal=Integer.MIN_VALUE;
+        int startRange=0;
+        int endRange=Integer.MAX_VALUE;
+        PriorityQueue<Element> minHeap=new PriorityQueue<>();
+        for(int i=0;i<nums.size();i++){
+
+            minHeap.offer(new Element(nums.get(i).get(0),i,0));
+            maxVal=Math.max(maxVal,nums.get(i).get(0));
+        }
+
+
+        while(nums.size()==minHeap.size()){
+
+            Element smallest=minHeap.poll();
+            int minVal=smallest.value;
+            if(maxVal-minVal<endRange-startRange){
+                startRange=minVal;
+                endRange=maxVal;
+
+            }
+
+            int nextIndex=smallest.elementIndex+1;
+            if(nextIndex<nums.get(smallest.listIndex).size()){
+                int nextValue=nums.get(smallest.listIndex).get(nextIndex);
+                minHeap.offer(new Element(nextValue,smallest.listIndex,nextIndex));
+                maxVal=Math.max(maxVal,nextValue);
+            }else{
+                break;
+            }
+        }
+
+
+
+        // Replace this placeholder return statement with your code
+        return new int[]{startRange,endRange};
     }
 
 
