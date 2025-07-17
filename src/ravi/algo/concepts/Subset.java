@@ -1,6 +1,7 @@
 package ravi.algo.concepts;
 
 
+import javax.management.relation.RoleList;
 import java.util.*;
 
 import static java.util.Collections.swap;
@@ -61,8 +62,303 @@ public class Subset {
            // System.out.println(PrintHyphens.repeat("-", 100));
         }
 
+        String[] strings = {"a1b2", "3z4", "ABC", "123", "xYz"};
+
+        for (int i = 0; i < strings.length; i++) {
+            System.out.println((i + 1) + ".\ts: \"" + strings[i] + "\"");
+            List<String> output = letterCasePermutationDiff(strings[i]);
+
+            System.out.print("\n\tOutput: [");
+            for (int j = 0; j < output.size(); j++) {
+                System.out.print("\"" + output.get(j) + "\"");
+                if (j < output.size() - 1) System.out.print(", ");
+            }
+            System.out.println("]");
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+        int[] nums = {2, 3, 6, 7};
+        int k = 9;
+        List<List<Integer>> subsets = getKSumSubsets(nums, k);
+        System.out.println("Subsets summing to " + k + ": " + subsets);
+
+        // Letter Tile Possibilities
+
+        String[] testCases = {"AAB", "ABC", "AAABBC", "CDB", "ZZZ"};
+
+        for (int i = 0; i < testCases.length; i++) {
+            System.out.println((i + 1) + ".\tTiles: \"" + testCases[i] + "\"");
+            System.out.println("\n\tOutput: " + numTilePossibilitiesLess(testCases[i]));
+            System.out.println("-" + new String(new char[100]).replace('\0', '-') + "\n");
+        }
 
     }
+
+    /*
+    generateSequences("AAB", "", 0)
+├─ exclude 'A' (index=0): generateSequences("AAB", "", 1)
+│  ├─ exclude 'A' (index=1): generateSequences("AAB", "", 2)
+│  │  ├─ exclude 'B' (index=2): generateSequences("AAB", "", 3) → "" (empty set) [skip count]
+│  │  └─ include 'B': generateSequences("AAB", "B", 3) → "B" → countPermutations("B") = 1
+│  └─ include 'A': generateSequences("AAB", "A", 2)
+│     ├─ exclude 'B': generateSequences("AAB", "A", 3) → "A" → countPermutations("A") = 1
+│     └─ include 'B': generateSequences("AAB", "AB", 3) → "AB" → countPermutations("AB") = 2 (AB, BA)
+├─ include 'A' (index=0): generateSequences("AAB", "A", 1)
+│  ├─ exclude 'A': generateSequences("AAB", "A", 2)
+│  │  ├─ exclude 'B': generateSequences("AAB", "A", 3) → "A" [already counted, return 0]
+│  │  └─ include 'B': generateSequences("AAB", "AB", 3) → "AB" [already counted, return 0]
+│  └─ include 'A': generateSequences("AAB", "AA", 2)
+│     ├─ exclude 'B': generateSequences("AAB", "AA", 3) → "AA" → countPermutations("AA") = 1
+│     └─ include 'B': generateSequences("AAB", "AAB", 3) → "AAB" → countPermutations("AAB") = 3 (AAB, ABA, BAA)
+
+     */
+
+    public static int numTilePossibilitiesLess(String sequence){
+        Set<String> uniqueSetTitles=new HashSet<>();
+        char[] chars=sequence.toCharArray();
+        Arrays.sort(chars);
+        String sortedSqueence=new String(chars);
+        int output=generateSequence(sortedSqueence,"",0 , uniqueSetTitles);
+        return output-1;
+
+    }
+
+    private static int generateSequence(String tiles, String currentLetterSet, int index, Set<String> uniqueSetTitles) {
+
+        if(index>tiles.length()){
+            if(!uniqueSetTitles.contains(currentLetterSet)){
+                uniqueSetTitles.add(currentLetterSet);
+                return countComputation(currentLetterSet);
+            }
+            return 0;
+        }
+
+        int withoutLetter=generateSequence(tiles,currentLetterSet,index+1,uniqueSetTitles);
+        int withLetter=generateSequence(tiles,currentLetterSet+tiles.charAt(index),index+1,uniqueSetTitles);
+
+        return withLetter+withoutLetter;
+
+    }
+
+    public static int factorial(int n) {
+        if(n<1)
+            return 1;
+
+        int result=1;
+        for(int i=2;i<=n;i++){
+            result*=i;
+        }
+      return result;
+    }
+    // Letter Tile Possibilities
+
+    public static int countComputation(String sequence){
+
+        int permutation = factorial(sequence.length());
+
+        Map<Character,Integer> frequency= new HashMap<>();
+        for(char ch:sequence.toCharArray()){
+            frequency.put(ch,frequency.getOrDefault(ch,0)+1);
+
+        }
+
+        int divisor=1;
+        for(int count:frequency.values()){
+            divisor*=factorial(count);
+        }
+
+        return permutation/divisor;
+
+    }
+
+
+
+
+
+
+
+    /*
+    * ""                          // start
+├── pick A (→ freq A:1)
+│   ├── pick A (→ freq A:0)
+│   │   └── pick B → "AAB" ✅
+│   └── pick B (→ freq B:0) → "AB" ✅
+│       └── pick A → "ABA" ✅
+├── pick B (→ freq B:0)
+│   └── pick A (→ freq A:1)
+│       └── pick A → "BAA" ✅
+
+* Level 0: ""
+├── A → "A" ✅
+│   ├── A → "AA" ✅
+│   │   └── B → "AAB" ✅
+│   └── B → "AB" ✅
+│       └── A → "ABA" ✅
+└── B → "B" ✅
+    └── A → "BA" ✅
+        └── A → "BAA" ✅
+
+* ""                         sum = 0
+├── A                     → "A"      ✅ sum = 1
+│   ├── A                 → "AA"     ✅ sum = 2
+│   │   └── B             → "AAB"    ✅ sum = 3
+│   └── B                 → "AB"     ✅ sum = 4
+│       └── A             → "ABA"    ✅ sum = 5
+├── B                     → "B"      ✅ sum = 6
+│   └── A                 → "BA"     ✅ sum = 7
+│       └── A             → "BAA"    ✅ sum = 8
+
+*
+*
+    * */
+
+    public static int numTilePossibilities(String tiles) {
+        int[] freq=new int[26];
+        for(char ch:tiles.toCharArray()){
+            freq[ch-'A']++;
+        }
+
+
+
+        // Replace this placeholder return statement with your code
+        return backtrackTiles(freq);
+    }
+
+    private static int backtrackTiles(int[] freq) {
+
+        int sum=0;
+        for(int i=0;i<26;i++){
+            if(freq[i]==0)
+                continue;
+
+            freq[i]--;
+            sum+=1+backtrackTiles(freq);
+            freq[i]++;
+        }
+        return sum;
+    }
+
+    /*
+    int[] nums = {1, 2, 3};
+int k = 3;
+    backtrack(0, 3, [])
+├── i=0, nums[i]=1 → target-1=2 → sub=[1]
+│   └── backtrack(1, 2, [1])
+│       ├── i=1, nums[i]=2 → target-2=0 → sub=[1,2] ✅
+│       │   └── backtrack(2, 0, [1,2]) → result: [1,2]
+│       └── i=2, nums[i]=3 → skip (3 > target 2)
+│
+├── i=1, nums[i]=2 → target-2=1 → sub=[2]
+│   └── backtrack(2, 1, [2])
+│       └── i=2, nums[i]=3 → skip (3 > target 1)
+│
+└── i=2, nums[i]=3 → target-3=0 → sub=[3] ✅
+    └── backtrack(3, 0, [3]) → result: [3]
+
+     */
+    public static List<List<Integer>> getKSumSubsets(int[] nums, int k) {
+        // Replace this placeholder return statement with your code
+        Arrays.sort(nums);
+        List<List<Integer>> result=new ArrayList<>();
+        List<Integer> subResult=new ArrayList<>();
+
+        backtrackNumbers(nums,0,k,subResult,result);
+
+        return result;
+    }
+
+    private static void backtrackNumbers(int[] nums, int index, int target,List<Integer> subResult, List<List<Integer>> result) {
+
+        if(target==0){
+            result.add(new ArrayList<>(subResult));
+            return;
+        }
+
+        for (int i = index; i < nums.length; i++) {
+            if(i>index && nums[i]==nums[i-1])
+                continue;
+
+            if(target<nums[i])
+                break;
+
+            subResult.add(nums[i]);
+
+            backtrackNumbers(nums,i+1,target-nums[i],subResult,result);
+            subResult.remove(subResult.size()-1);
+
+
+        }
+    }
+
+
+    public static List<String> letterCasePermutationDiff(String s)
+    {
+
+        List<String> result=new ArrayList<>();
+        if(s.length()==0){
+            return result;
+        }
+
+        result.add("");
+        for(char ch:s.toCharArray()){
+            int size=result.size();
+            for(int i=0;i<size;i++){
+                if(Character.isLetter(ch)){
+                    result.set(i,result.get(i)+Character.toLowerCase(ch));
+                    result.add(result.get(i)+Character.toLowerCase(ch));
+
+                }else{
+                    result.set(i,result.get(i)+ch);
+                }
+            }
+
+        }
+        return result;
+    }
+
+    public static List<String> letterCasePermutation(String s)
+    {
+
+        List<String> result=new ArrayList<>();
+        if(s.length()==0){
+            return result;
+        }
+        backTrackLetterCaseP(0,new StringBuilder(),s,result);
+
+        return result;
+    }
+
+    private static void backTrackLetterCaseP(int index, StringBuilder output, String s, List<String> result) {
+        if(index==s.length()){
+            result.add(output.toString());
+            return;
+        }
+
+        if(index<s.length()) {
+            char character = s.charAt(index);
+            if(Character.isDigit(character)){
+                output.append(character);
+                backTrackLetterCaseP(index + 1, output, s, result);
+                output.deleteCharAt(output.length()-1);
+            }else {
+                char smallChar = Character.toLowerCase(character);
+
+                output.append(smallChar);
+                backTrackLetterCaseP(index + 1, output, s, result);
+                output.deleteCharAt(output.length()-1);
+
+
+                char upperChar = Character.toUpperCase(character);
+                output.append(upperChar);
+                backTrackLetterCaseP(index + 1, output, s, result);
+                output.deleteCharAt(output.length()-1);
+
+            }
+        }
+
+    }
+
+
 
 
     /*
@@ -106,6 +402,23 @@ backtrack(0, "")                        // index = 0, digit = '2'
 
      */
 
+    /*
+    *
+    * Start: ""
+├── "a" (from '2')
+│   ├── "ad" (from '3') ✅
+│   ├── "ae" (from '3') ✅
+│   └── "af" (from '3') ✅
+├── "b" (from '2')
+│   ├── "bd" (from '3') ✅
+│   ├── "be" (from '3') ✅
+│   └── "bf" (from '3') ✅
+└── "c" (from '2')
+    ├── "cd" (from '3') ✅
+    ├── "ce" (from '3') ✅
+    └── "cf" (from '3') ✅
+
+    * */
 
     public static List<String> letterCombinations(String digits){
 
@@ -338,7 +651,7 @@ Expression	What it does	Example (bit = 2)	Result
 
     */
 
-
+// getBit(13, i) Instead, it checks whether the bit at position i is 1 or 0 in the binary representation of 13. or “Does 13 include the bit at position i?”
     public static List<List<Integer>> findAllSubsets(int[] nums) {
 
         // Replace this placeholder return statement with your code
