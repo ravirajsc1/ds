@@ -12,6 +12,13 @@ import java.util.*;
 | **Find maximum value that satisfies condition**                                        | `while (left < right)` | `if (condition(mid))` | `left = mid`<br>`else right = mid - 1` | `left`                        |
 | **Find minimum value that satisfies condition**                                        | `while (left < right)` | `if (condition(mid))` | `right = mid`<br>`else left = mid + 1` | `left`                        |
 x
+
+| Goal                            | Mid Formula                                              | Example Use Case                  | Why?                                      |
+| ------------------------------- | -------------------------------------------------------- | --------------------------------- | ----------------------------------------- |
+| **Find exact match**            | `left + (right - left) / 2`                              | Binary search in sorted array     | Standard; no infinite loop                |
+| **Find minimum feasible value** | `left + (right - left) / 2`                              | First `true` in boolean predicate | Safe shrinking from right                 |
+| **Find maximum feasible value** | `right - (right - left) / 2` or `(left + right + 1) / 2` | Last `true` in boolean predicate  | Prevents getting stuck when rounding down |
+
  */
 
 public class ModifiedBinarySearch {
