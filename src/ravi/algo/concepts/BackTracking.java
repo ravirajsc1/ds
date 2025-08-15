@@ -323,8 +323,90 @@ public class BackTracking {
 
         int[] matchsticks2 = {5, 5, 5, 5, 4, 4, 4, 4, 3, 3, 3, 3};
         System.out.println(matchsticksToSquare(matchsticks2)); // Output: true
+
+
+    int[] nArr = {2, 1, 4};
+
+    for (int i = 0; i < nArr.length; ++i) {
+        System.out.println((i + 1) + "\tn: " + nArr[i]);
+        List<List<String>> answer = solveNQueens(nArr[i]);
+        System.out.print("\n\tQueens' arrangements:\n\n\t[");
+        for (int j = 0; j < answer.size(); ++j) {
+            if (j > 0)
+                System.out.print("\t");
+            System.out.print("[");
+            for (int k = 0; k < answer.get(j).size(); ++k) {
+                System.out.print("\"" + answer.get(j).get(k) + "\"");
+                if (k < answer.get(j).size() - 1)
+                    System.out.print(", ");
+            }
+            System.out.print("]");
+            if (j < answer.size() - 1)
+                System.out.print(",\n");
+        }
+        System.out.println("]");
+        System.out.println("\n" + "-".repeat(100));
     }
 
+}
+
+
+//  N-Queens
+
+public static List<List<String>> solveNQueens(int n) {
+        Set<Integer> daig=new HashSet<>();
+        Set<Integer> antiDiag=new HashSet<>();
+        Set<Integer> cols=new HashSet<>();
+        List<List<String>> result=new ArrayList<>();
+        char[][] path=new char[n][n];
+        for(char[] chars:path)
+            Arrays.fill(chars,'.');
+        backtrackNQueen(n,0,daig,antiDiag,cols,path, result);
+
+    // Replace this placeholder return statement with your code
+    return result;
+}
+
+    private static void backtrackNQueen(int n, int row, Set<Integer> daigset, Set<Integer> antiDiagSet, Set<Integer> cols, char[][] path, List<List<String>> result) {
+
+
+        if(row==n){
+            List<String> options=new ArrayList<>();
+            for(char[] chars:path) {
+                options.add(new String(chars));
+            }
+            result.add(options);
+
+            return;
+        }
+
+        for(int col=0;col<n;col++){
+            int daig=row-col;
+            int antiDaig=row+col;
+
+            if(isValidQueen(col,daig,antiDaig,daigset,antiDiagSet,cols)){
+                daigset.add(daig);
+                antiDiagSet.add(antiDaig);
+                cols.add(col);
+                path[row][col]='Q';
+                backtrackNQueen(n,row+1,daigset,antiDiagSet,cols,path,result);
+                path[row][col]='.';
+                daigset.remove(daig);
+                antiDiagSet.remove(antiDaig);
+                cols.remove(col);
+            }
+
+        }
+
+    }
+
+    private static boolean isValidQueen( int col, int daig, int antiDaig, Set<Integer> daigset, Set<Integer> antiDiagSet, Set<Integer> cols) {
+            if(cols.contains(col) || daigset.contains(daig) || antiDiagSet.contains(antiDaig)){
+                return false;
+            }
+
+            return true;
+    }
 
 
     //  Matchsticks to Square

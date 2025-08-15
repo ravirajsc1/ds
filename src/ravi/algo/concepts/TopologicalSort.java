@@ -194,6 +194,48 @@ public class TopologicalSort {
         
     }
 
+
+
+    // Find All Possible Recipes from Given Supplies
+
+    public static List<String> findAllRecipes (String[] recipes, List<List<String>> ingredients, String[] supplies) {
+        Map<String,List<String>> graph=new HashMap<>();
+        Map<String,Integer> indegree=new HashMap<>();
+        // Initialize indegree for each recipe
+        for (String recipe : recipes) {
+            indegree.put(recipe, 0);
+        }
+
+        for(int i=0;i<ingredients.size();i++){
+            String recipe=recipes[i];
+            for(String ing:ingredients.get(i)){
+                graph.computeIfAbsent(ing,k->new ArrayList<>()).add(recipe);
+                indegree.put(recipe,indegree.getOrDefault(recipe,0)+1);
+            }
+
+        }
+
+        Queue<String> source=new LinkedList<>(Arrays.asList(supplies));
+
+
+        List<String> result = new ArrayList<>();
+        while(!source.isEmpty()){
+            String ingrdient=source.poll();
+            if(graph.containsKey(ingrdient)){
+                for(String nextRecipe:graph.get(ingrdient)){
+                    indegree.put(nextRecipe,indegree.get(nextRecipe)-1);
+                    if(indegree.get(nextRecipe)==0){
+                        source.add(nextRecipe);
+                        result.add(nextRecipe);
+                    }
+                }
+            }
+
+        }
+
+        return result;
+    }
+
 // Parallel Courses III
     public static int minimumTime(int n, int[][] relations, int[] time) {
 
