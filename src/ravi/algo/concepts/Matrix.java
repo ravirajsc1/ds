@@ -302,13 +302,292 @@ public class Matrix {
             System.out.println("-" + new String(new char[100]).replace('\0', '-') + "\n");
         }
 
+        int[][][] testCasesMatrix = {
+                {{2, 4, 5}, {7, 3, 9}},
+                {{1}},
+                {{100000, 99999}, {99998, 99997}},
+                {{5, 1, 4}, {2, 3, 6}},
+                {{5, 6}, {7, 8}}
+        };
+
+        for (int[][] grid : testCasesMatrix) {
+            System.out.println("\tInput grid:");
+            for (int[] row : grid)
+                System.out.println("\t" + Arrays.toString(row));
+            int[][] result = minimizeMaxValue(grid);
+            System.out.println("\n\tUpdated grid:");
+            for (int[] row : result)
+                System.out.println("\t" + Arrays.toString(row));
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+        // Kth Smallest Number in Multiplication Table
+        int[][] testCasesKth = {
+                {3, 3, 5},
+                {2, 3, 6},
+                {4, 4, 7},
+                {5, 6, 12},
+                {3, 5, 9}
+        };
+
+        for (int ntr = 0; ntr < testCasesKth.length; ++ntr) {
+            int m = testCasesKth[ntr][0];
+            int n = testCasesKth[ntr][1];
+            int k = testCasesKth[ntr][2];
+
+            System.out.println((ntr + 1) + ".\tm: " + m + ", n: " + n + ", k: " + k);
+
+            int result = findKthNumber(m, n, k);
+            System.out.println("\tK-th smallest number: " + result);
+            System.out.println(new String(new char[100]).replace("\0", "-"));
+        }
+
+        // // rising water
+
+        int[][][] testCasesRisingWater = {
+                {{0, 2}, {1, 3}},
+                {{0, 5, 4}, {6, 2, 8}, {7, 3, 1}},
+                {{0, 7, 4}, {2, 5, 6}, {1, 8, 3}},
+                {{0}},
+                {{0, 1}, {2, 3}}
+        };
+
+        for (int itrn = 0; itrn < testCasesRisingWater.length; itrn++) {
+            System.out.println((itrn + 1) + ".\tGrid: " + Arrays.deepToString(testCasesRisingWater[itrn]));
+            int result = swimInWater(testCasesRisingWater[itrn]);
+            System.out.println("\tResult: " + result);
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+        // Best Meeting Point
+
+        int[][][] gridArr = {
+                // Test Case 1: Two friends adjacent in a row
+                {{1, 1}},
+
+                // Test Case 2: Friends in the same column
+                {{0, 1, 0},
+                        {0, 0, 0},
+                        {0, 1, 0}},
+
+                // Test Case 3: Four friends in corners
+                {{1, 0, 1},
+                        {0, 0, 0},
+                        {1, 0, 1}},
+
+                // Test Case 4: Irregular distribution
+                {{0, 0, 1},
+                        {1, 0, 0},
+                        {0, 0, 1}},
+
+                // Test Case 5: Large cluster in center
+                {{0, 1, 0},
+                        {1, 1, 1},
+                        {0, 1, 0}}
+        };
+
+
+        for (int imt = 0; imt < gridArr.length; ++imt) {
+            System.out.print((imt + 1) + ".\tgrid: [");
+            for (int j = 0; j < gridArr[imt].length; ++j) {
+                System.out.print("[");
+                for (int k = 0; k < gridArr[imt][j].length; ++k) {
+                    System.out.print(gridArr[imt][j][k]);
+                    if (k < gridArr[imt][j].length - 1)
+                        System.out.print(", ");
+                }
+                System.out.print("]");
+                if (j < gridArr[imt].length - 1)
+                    System.out.print(", ");
+            }
+            System.out.println("]\n");
+            System.out.println("\tTotal travel distance: " + minTotalDistance(gridArr[imt]));
+            System.out.println("-".repeat(100));
+        }
+
     }
 
-// Number of Spaces Cleaning Robot Cleaned
-    public static int numberOfCleanRooms(int[][] room) {
+// Best Meeting Point
+public static int minTotalDistance(int[][] grid) {
+        List<Integer> rows=new ArrayList<>();
+        List<Integer> cols=new ArrayList<>();
+
+
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]==1)
+                    rows.add(i);
+            }
+        }
+
+        for(int j=0;j<grid[0].length;j++){
+            for(int i=0;i<grid.length;i++){
+                if(grid[i][j]==1)
+                    cols.add(j);
+            }
+        }
+
+
+    // Replace this placeholder return statement with your code
+    return minDist(rows)+minDist(cols);
+}
+
+    private static int minDist(List<Integer> cells) {
+        int dist=0;
+        int l=0,r=cells.size()-1;
+
+        while(l<r){
+            dist+=cells.get(r)-cells.get(l);
+            l++;
+            r--;
+        }
+
+
+
+        return dist;
+    }
+
+
+    // rising water
+
+    public static int swimInWater(int[][] grid) {
+
+        PriorityQueue<int[]> minHeap=new PriorityQueue<>(Comparator.comparingInt(a->a[0]));
+        minHeap.add(new int[]{grid[0][0],0,0});
+        int[][] directions =new int[][]{{0,1},{1,0},{0,-1},{-1,0}};
+        Set<String> visited=new HashSet<>();
+        visited.add("0,0");
+        int max=0;
+        int n=grid.length;
+        while(!minHeap.isEmpty()){
+            int[] current = minHeap.poll();
+            int value=current[0];
+            int row=current[1];
+            int col=current[2];
+            max=Math.max(value,max);
+            if(row==n-1 && col==n-1)
+                break;
+
+            for(int[] direction:directions){
+                int nextRow=row+direction[0];
+                int nextCol=col+direction[1];
+
+                if(nextRow>=0 && nextCol>=0 && nextRow<n && nextCol<n && !visited.contains(nextRow+","+nextCol)){
+                    minHeap.offer(new int[]{grid[nextRow][nextCol],nextRow,nextCol});
+                    visited.add(nextRow+","+nextCol);
+
+                }
+            }
+
+
+        }
+
+
+        
 
         // Replace this placeholder return statement with your code
-        return -1;
+        return max;
+    }
+
+
+
+    // Kth Smallest Number in Multiplication Table
+
+    public static int findKthNumber (int m, int n, int k)
+    {
+        // Replace this placeholder return statement with your code
+
+        int left=1;
+        int right=m*n;
+
+        while(left<right){
+            int mid=left+(right-left)/2;
+            if(isEnough(m,n,mid,k)){
+                right=mid;
+            }else{
+                left=mid+1;
+            }
+
+        }
+
+        return left;
+    }
+
+    private static boolean isEnough(int m, int n, int mid, int k) {
+        int count=0;
+        for(int i=1;i<=m;i++){
+            count+=Math.min(mid/i,n);
+        }
+
+        return count>=k;
+    }
+
+
+    // Minimize Maximum Value in a Grid
+
+    public static int[][] minimizeMaxValue(int[][] grid) {
+
+        int n=grid.length;
+        int m=grid[0].length;
+        List<int[]> cells=new ArrayList<>();
+
+        for(int i=0;i<n;i++)
+            for(int j=0;j<m;j++)
+                cells.add(new int[]{grid[i][j],i,j});
+
+
+        cells.sort(Comparator.comparingInt(a->a[0]));
+
+        int[] rows=new int[n];
+        int[] cols=new int[m];
+
+        // assign minimized values
+        for (int[] cell : cells) {
+            int row = cell[1];
+            int col = cell[2];
+            int max = Math.max(rows[row], cols[col]) + 1;
+            grid[row][col] = max;
+            rows[row] = max;
+            cols[col] = max;
+        }
+
+        return grid;
+
+    }
+
+
+// Number of xSpaces Cleaning Robot Cleaned
+    public static int numberOfCleanRooms(int[][] room) {
+
+        int rows=room.length;
+        int cols=room[0].length;
+
+        int direction =0;
+        int col=0,row=0;
+        int cleaned=0;
+        int[][] directions=new int[][]{{0,1},{1,0},{0,-1},{-1,0}};
+
+        while((room[row][col] >> (direction+1) & 1)==0){
+
+            if(room[row][col]==0){
+                cleaned++;
+            }
+
+            room[row][col] |= 1 << (direction+1);
+            int nextRow= row+directions[direction][0];
+            int nextCol= col+directions[direction][1];
+
+            if(nextRow>=0 && nextCol >=0 && nextRow< rows && nextCol <cols && room[nextRow][nextCol]!=1){
+                row=nextRow;
+                col=nextCol;
+            }else{
+                direction=(direction+1)%4;
+            }
+
+        }
+
+        // Replace this placeholder return statement with your code
+        return cleaned;
     }
 
 
@@ -699,6 +978,32 @@ public class Matrix {
         return result;
     }
 
+    /*
+    🧮 How the indices are chosen
+
+Let’s say the current element is matrix[row][col].
+The four positions that cycle together are:
+
+Top → matrix[row][col]
+
+Right → matrix[col][n - 1 - row]
+
+Bottom → matrix[n - 1 - row][n - 1 - col]
+
+Left → matrix[n - 1 - col][row]
+
+That’s the key formula to remember!
+
+🔍 Why those formulas?
+
+Imagine the coordinates (row, col):
+
+The right side is "swap row & col, but flip row" → (col, n - 1 - row)
+
+The bottom side is "flip both row & col" → (n - 1 - row, n - 1 - col)
+
+The left side is "swap row & col, but flip col" → (n - 1 - col, row)
+     */
     // Rotate Image
     public static int[][] rotateImage(int[][] matrix) {
         int n=matrix.length;
