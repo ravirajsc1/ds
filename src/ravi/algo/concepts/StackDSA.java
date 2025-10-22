@@ -135,12 +135,279 @@ public class StackDSA {
 
         //Number of Visible People in a Queue
 
+        int[][] testCasesQ = {
+                {10, 6, 8, 5, 11, 9},
+                {5, 1, 2, 3, 10},
+                {1, 2, 3, 4, 5},
+                {5, 4, 3, 2, 1},
+                {7, 3, 9, 1, 6, 10}
+        };
 
+        for (int i = 0; i < testCasesQ.length; i++) {
+            int[] heights = testCasesQ[i];
+            int[] result = canSeePersonsCount(heights);
+            System.out.println((i + 1) + ".\theights: " + Arrays.toString(heights));
+            System.out.println("\tanswer: " + Arrays.toString(result));
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+
+        String[] arr = {
+                "|(&(t,t,f))",
+                "&(t,t,t,t)",
+                "|(f,f,f,f)",
+                "!(!(!(!(t))))",
+                "|(&(t,f),!(f),&(t,t))"
+        };
+
+
+        for (int i = 0; i < arr.length; ++i) {
+            System.out.println((i + 1) + "\texpression: \"" + arr[i] + "\"");
+            System.out.println("\tResult: " + (parseBoolExpr(arr[i]) ? "Yes" : "No"));
+            System.out.println("-".repeat(100));
+        }
+
+        // Remove Duplicate Letters
+        String[] test_cases = {
+                "bbcaacdd",
+                "bcabc",
+                "cbacdcbc",
+                "bbcaacdd",
+                "abacb",
+                "azazaz"
+        };
+
+        int i = 1;
+        for (String sd : test_cases) {
+            System.out.println(i + "\tInput: " + sd);
+            System.out.println("\tOutput: " + removeDuplicateLetters(sd));
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+            i += 1;
+        }
+
+        isValid("(){[{()}]}");
+
+    }
+
+
+    // Valid Parentheses
+    public static boolean isValid(String s) {
+        Deque<Character> stack = new ArrayDeque<>();
+        for (char ch : s.toCharArray()) {
+            if (ch == '(') {
+                stack.push(')');
+            } else if (ch == '[') {
+                stack.push(']');
+            } else if (ch == '{') {
+                stack.push('}');
+            } else {
+                if (stack.isEmpty() || stack.pop() != ch) {
+                    return false;
+                }
+
+            }
+        }
+            return stack.isEmpty();
 
 
     }
 
+    // Remove Duplicate Letters
+
+    public static String removeDuplicateLetters (String s) {
+
+        Map<Character,Integer> freq= new HashMap<>();
+        Stack<Character> stack=new Stack<>();
+        Set<Character>  visted =new HashSet<>();
+
+        for(char ch:s.toCharArray()){
+            freq.put(ch,freq.getOrDefault(ch,0)+1);
+        }
+
+        for(char ch:s.toCharArray()){
+            freq.put(ch,freq.get(ch)-1);
+
+            if(visted.contains(ch)) {
+                continue;
+            }
+            while(  !stack.isEmpty() && freq.getOrDefault(stack.peek(),0)>0  && ch<stack.peek()){
+                visted.remove(stack.pop());
+            }
+            visted.add(ch);
+             stack.push(ch);
+
+        }
+
+
+        StringBuilder sb = new StringBuilder();
+        for (char c : stack) sb.append(c);
+
+        // Write your code here
+        return sb.toString();
+    }
+
+    // Parsing a Boolean Expression
+
+    public static boolean parseBoolExpr(String expression) {
+
+        Stack<Character> stack=new Stack<>();
+
+
+        for(char ch:expression.toCharArray()){
+
+            if(ch==')'){
+                List<Character> values=new ArrayList<>();
+                while(stack.peek()!='('){
+                    values.add(stack.pop());
+                }
+                stack.pop();
+                char op= stack.pop();
+                char result=evaluateSubExpression(values,op);
+                stack.push(result);
+
+            }else if(ch!=','){
+                stack.push(ch);
+            }
+
+        }
+
+        return (stack.peek()=='t');
+    }
+
+    private static char evaluateSubExpression(List<Character> values, char op) {
+
+        if(op=='!'){
+            return values.get(0)=='t'?'f':'t';
+        }
+
+        if(op=='&'){
+            for(char v:values){
+               if(v=='f'){
+                   return 'f';
+               }
+            }
+            return 't';
+        }
+
+        if(op=='|'){
+            for(char v:values){
+                if(v=='t'){
+                    return 't';
+                }
+            }
+            return 'f';
+        }
+        return 'f';
+    }
+    // Parsing a Boolean Expression
+
+    public static boolean parseBoolExprMy(String expression) {
+
+        Stack<Character> stack=new Stack<>();
+
+        for(char ch:expression.toCharArray()){
+
+            if(ch==')'){
+                char res=findResult(stack);
+                stack.push(res);
+            }else if(ch!=','){
+                stack.push(ch);
+            }
+
+        }
+
+        if(stack.peek()=='t'){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    private static char findResult(Stack<Character> stack) {
+        List<Character> res=new ArrayList<>();
+        while(stack.peek()!='('){
+            res.add(stack.pop());
+        }
+        stack.pop();
+        char op=stack.pop();
+        char first=res.get(0);
+
+        boolean result=false;
+        if(first=='t'){
+            result=true;
+        }
+        for(char ch:res){
+            if(op=='!'){
+                if(ch=='t')
+                    return 'f';
+                else
+                    return 't';
+            }else if(op=='&'){
+                if(ch=='t'){
+                    result=result&true;
+                }else if(ch=='f'){
+                    result=result&false;
+                }
+            }else if(op=='|'){
+                if(ch=='t'){
+                    result=result|true;
+                }else if(ch=='f'){
+                    result=result|false;
+                }
+            }
+
+        }
+
+        if(result){
+            return 't';
+        }else{
+            return 'f';
+        }
+
+    }
+
     //Number of Visible People in a Queue
+    public static int[] canSeePersonsCount(int[] heights) {
+        Deque<Integer> stack=new ArrayDeque<>();
+
+        int n=heights.length;
+        int[] result=new int[n];
+        for(int i=n-1;i>=0;i--){
+
+            while(!stack.isEmpty() && stack.peek()<heights[i]){
+                result[i]++;
+                stack.pop();
+
+            }
+
+            if(!stack.isEmpty()){
+                result[i]++;
+            }
+            stack.push(heights[i]);
+        }
+        // Replace this placeholder return statement with your code
+        return result;
+    }
+
+
+    //Number of Visible People in a Queue  - better
+    public static int[] canSeePersonsCountforward(int[] heights) {
+        Deque<Integer> stack = new ArrayDeque<>();
+        int n = heights.length;
+        int[] result = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && heights[stack.peek()] < heights[i]) {
+                result[stack.peek()]++;
+                stack.pop();
+            }
+            if (!stack.isEmpty()) {
+                result[stack.peek()]++;
+            }
+            stack.push(i);
+        }
+        return result;
+    }
 
 
     // Number of Valid Subarrays
