@@ -186,8 +186,470 @@ public class Graph {
         }
 
         // Lucky Numbers in a Matrix
+
+        // Path with Maximum Probability
+        int[][][] edgesMax = {
+                {{0, 1}, {1, 2}, {0, 2}},
+                {{0, 1}, {1, 2}, {0, 2}},
+                {{0, 1}, {1, 2}, {2, 3}, {0, 3}},
+                {{0, 1}, {1, 2}, {2, 3}, {3, 4}},
+                {{0, 1}},
+                {{0, 1}, {1, 2}}
+        };
+
+        double[][] succProb = {
+                {0.5, 0.5, 0.2},
+                {0.5, 0.5, 0.3},
+                {0.5, 0.6, 0.7, 0.2},
+                {0.8, 0.6, 0.7, 0.9},
+                {0.1},
+                {0.5, 0.0}
+        };
+
+        int[] nmax = {3, 3, 4, 5, 2, 3};
+        int[] start = {0, 0, 0, 0, 0, 0};
+        int[] end = {2, 2, 3, 4, 1, 2};
+
+        for (int i = 0; i < n.length; i++) {
+            System.out.println((i + 1) + ".\tNumber of nodes: " + n[i]);
+            System.out.println("\tEdges: " + Arrays.deepToString(edgesMax[i]));
+            System.out.println("\tSuccess Probabilities: " + Arrays.toString(succProb[i]));
+            System.out.println("\tStart: " + start[i] + ", End: " + end[i]);
+
+            double result = maxProbability(n[i], edgesMax[i], succProb[i], start[i], end[i]);
+            System.out.println("\n\tOutput: " + result);
+            System.out.println("-" + new String(new char[100]).replace('\0', '-') + "\n");
+        }
+
+
+  // Tree Diameter
+
+        int[][][] testCases = {
+                {{0, 1}},
+                {{0, 1}, {0, 2}},
+                {{0, 1}, {1, 2}, {1, 3}, {3, 4}, {4, 5}, {4, 6}},
+                {{0, 1}, {1, 2}, {2, 3}, {3, 4}},
+                {{0, 1}, {1, 2}, {1, 3}, {3, 4}, {3, 5}}
+        };
+
+
+        int i = 0;
+        for (int[][] edgesDia : testCases) {
+            System.out.print(" " + (i + 1) + ".\tEdges: {");
+            for (int[] edge : edgesDia) {
+                System.out.print("{" + edge[0] + ", " + edge[1] + "}");
+            }
+            System.out.println("}");
+            System.out.println("\tTree Diameter: " + treeDiameter(edgesDia));
+            System.out.println("-" + new String(new char[100]).replace('\0', '-') + "\n");
+            i++;
+        }
+
+        // Reorder Routes to Make All Paths Lead to the City Zero
+        // Define test cases without using a struct-like object.
+        int[][][] testCasesConnections = {
+                { {0, 1}, {2, 0} },
+                { {0, 1}, {1, 2}, {2, 3} },
+                { {0, 1}, {2, 0}, {3, 2}, {4, 3}, {4, 5} },
+                { {1, 0}, {2, 0}, {3, 1}, {4, 1}, {5, 3}, {6, 4} },
+                { {0, 1}, {1, 2}, {3, 2}, {4, 3}, {5, 3}, {6, 5} }
+        };
+        int[] ns = { 3, 4, 6, 7, 7 };
+
+
+        for (int ize = 0; ize < testCasesConnections.length; ize++) {
+            int nze = ns[ize];
+            int[][] connections = testCasesConnections[ize];
+            System.out.println((ize + 1) + ".\tn: " + nze + ", connections: " + java.util.Arrays.deepToString(connections));
+            int result = minReorderB(nze, connections);
+            System.out.println("\tResult: " + result);
+            System.out.println(new String(new char[100]).replace("\0", "-"));
+        }
+
+        // Minimum Cost to Make at Least One Valid Path in a Grid
+
+        int[][][] gridArr = {
+                {{1, 1, 3}, {2, 2, 3}, {1, 1, 4}},
+                {{1, 1, 3, 1}, {3, 1, 2, 2}, {1, 4, 1, 1}, {4, 1, 1, 3}},
+                {{1, 1}, {1, 1}},
+                {{4}},
+                {{4, 3, 4, 3}, {3, 4, 3, 4}}
+        };
+
+        for (int imin = 0; imin < gridArr.length; ++imin) {
+            System.out.print((imin + 1) + ".\tgrid: [");
+            for (int j = 0; j < gridArr[imin].length; ++j) {
+                System.out.print("[");
+                for (int kmin = 0; kmin < gridArr[imin][j].length; ++kmin) {
+                    System.out.print(gridArr[imin][j][kmin]);
+                    if (kmin < gridArr[imin][j].length - 1)
+                        System.out.print(", ");
+                }
+                System.out.print("]");
+                if (j < gridArr[imin].length - 1)
+                    System.out.print(", ");
+            }
+            System.out.println("]\n");
+            System.out.println("\tMinimum cost: " + minCost(gridArr[imin]));
+            System.out.println("-".repeat(100));
+        }
+
+        // Longest Cycle in a Graph
+        int[][] testCasesLong = {
+                {3, 3, 4, 2, 3},
+                {2, -1, 3, 1},
+                {1, 2, 3, 4, 0},
+                {2, -1, 3, 4, 5, 3},
+                {1, 2, 3, 4, 5, 6, 3},
+                {
+                        1,  // 0 → 1
+                        2,  // 1 → 2
+                        3,  // 2 → 3
+                        0,  // 3 → 0   (cycle length = 4)
+
+                        6,  // 4 → 6
+                        -1, // 5
+                        4   // 6 → 4   (cycle length = 2)
+                }
+        };
+
+
+        for (int ilong = 0; ilong < testCasesLong.length; ilong++) {
+            int[] edgeslong = testCasesLong[ilong];
+            System.out.print((ilong + 1) + ".\tedges: [");
+            for (int j = 0; j < edgeslong.length; j++) {
+                System.out.print(edgeslong[j]);
+                if (j != edgeslong.length - 1) System.out.print(", ");
+            }
+            System.out.println("]");
+
+            int output = longestCycle(edgeslong);
+            System.out.println("\tOutput: " + output);
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+
+        }
+
+// Shortest Cycle in a Graph
+        int[][][] testCasesShortest = {
+                {{0, 1}, {1, 2}, {2, 3}, {3, 0}},
+                {{0, 1}},
+                {{0, 1}, {2, 3}},
+                {{0, 1}, {1, 2}, {2, 3}, {3, 0}, {1, 3}, {3, 4}, {4, 5}},
+                {{0, 1}, {1, 2}, {2, 0}, {3, 4}, {4, 5}, {5, 3}, {2, 3}, {3, 6}, {6, 0}}
+        };
+
+        int[] nodeCounts = {4, 2, 5, 6, 7};
+
+        for (int itest = 0; itest < testCasesShortest.length; itest++) {
+            int nshort = nodeCounts[itest];
+            int[][] edgesShort = testCasesShortest[itest];
+            System.out.println((itest + 1) + ".\tInput: nshort = " + nshort + ", edgesShort = " + Arrays.deepToString(edgesShort));
+            Graph sol = new Graph();
+            System.out.println("\tShortest Cycle Length = " + sol.findShortestCycle(nshort, edgesShort));
+            System.out.println("-" + new String(new char[100]).replace('\0', '-') + "\n");
+        }
+
     }
 
+
+// Shortest Cycle in a Graph
+
+
+    public int findShortestCycle(int n, int[][] edges) {
+
+      Map<Integer,List<Integer>> adj=new HashMap<>();
+
+      for(int[] edge:edges){
+          int u=edge[0];
+          int v=edge[1];
+          adj.computeIfAbsent(u,x->new ArrayList<>()).add(v);
+          adj.computeIfAbsent(v,x->new ArrayList<>()).add(u);
+      }
+
+      int[] visited=new int[n];
+      Arrays.fill(visited,-1);
+      int minCycle=Integer.MAX_VALUE;
+
+      for(int i=0;i<n;i++){
+         if(visited[i]==-1) {
+             int cycle = bsfFindShortedCycle(adj, i, visited);
+             minCycle = Math.min(minCycle, cycle);
+         }
+      }
+
+      return (minCycle!=Integer.MAX_VALUE)?minCycle:-1;
+    }
+
+    private int bsfFindShortedCycle(Map<Integer, List<Integer>> adj, int start, int[] visited) {
+
+        int minCycle=Integer.MAX_VALUE;
+
+        int[] dist=new int[visited.length];
+        Arrays.fill(dist,-1);
+
+        Queue<int[]> dq=new LinkedList<>();
+        dq.offer(new int[]{start,-1});
+
+
+        visited[start]=0;
+        dist[start]=0;
+
+        while(!dq.isEmpty()){
+            int[] current=dq.poll();
+            int node=current[0];
+            int parent=current[1];
+            int currentDist=dist[node];
+
+            for(int neibour :adj.getOrDefault(node,new ArrayList<>())){
+                if(neibour==parent)
+                    continue;;
+
+                if(dist[neibour]!=-1){  // cycle dected
+                    int neibourDist=dist[node]+dist[neibour]+1;
+                    minCycle=Math.min(minCycle,neibourDist);
+                }else{
+                    dist[neibour]=currentDist+1;
+                    dq.offer(new int[]{neibour,node});
+
+                }
+             }
+        }
+        return minCycle;
+    }
+// Longest Cycle in a Graph
+
+    public static int longestCycle(int[] edges) {
+        int n = edges.length;
+        int[] visited = new int[n];
+        Arrays.fill(visited, -1);
+
+        int maxCycle = -1;
+
+        for (int i = 0; i < n; i++) {
+            if(visited[i]!=-1)
+                continue;
+
+            int time = 0;
+            Map<Integer, Integer> nodeVisted = new HashMap<>();
+            int current = i;
+
+            while (current != -1 && visited[current]==-1) {
+                visited[current] = time;
+                nodeVisted.put(current, time);
+                current = edges[current];
+                time++;
+                if (nodeVisted.containsKey(current)) {
+                    int timeTaken = time - nodeVisted.get(current);
+                    maxCycle = Math.max(timeTaken, maxCycle);
+                    break;
+
+                }
+            }
+
+        }
+        return maxCycle;
+    }
+    // Minimum Cost to Make at Least One Valid Path in a Grid
+
+    public static int minCost(int[][] grid) {
+
+        int n=grid.length, m=grid[0].length;
+
+        int[][] costgrid=new int[n][m];
+        for(int[] row:costgrid){
+            Arrays.fill(row,Integer.MAX_VALUE);
+        }
+        costgrid[0][0]=0;
+        int[][] dir=new int[][]{{0,1},{0,-1},{1,0},{-1,0}};
+
+        Deque<int[]> deque=new ArrayDeque<>();
+        deque.offerFirst(new int[]{0,0});
+
+        while(!deque.isEmpty()){
+            int[] current=deque.pollFirst();
+            int row=current[0],col=current[1];
+
+            for(int d=0;d<4;d++){
+                int newrow=row+dir[d][0];
+                int newcol=col+dir[d][1];
+                if(isValidAndImprovable(costgrid,newrow,newcol)){
+
+                    int cost= grid[row][col]!=(d+1)?1:0;
+                    if(costgrid[row][col] +cost < costgrid[newrow][newcol] ) {
+                        costgrid[newrow][newcol]=costgrid[row][col] +cost;
+                        if(cost==1){
+                            deque.offerLast(new int[]{newrow,newcol});
+                        }else{
+                            deque.offerFirst(new int[]{newrow,newcol});
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+        return costgrid[n-1][m-1];
+    }
+
+    private static boolean isValidAndImprovable(int[][] costgrid, int newrow, int newcol) {
+        return newcol>=0 && newrow>=0 && newrow<costgrid.length && newcol<costgrid[0].length && costgrid[newrow][newcol]!=0;
+    }
+
+
+    // Reorder Routes to Make All Paths Lead to the City Zero
+
+
+    public static int minReorderB(int n, int[][] connections)
+    {
+
+        Map<Integer,List<int[]>> adj=new HashMap<>();
+
+        for(int[] connection:connections){
+            int source=connection[0];
+            int destination=connection[1];
+            adj.computeIfAbsent(source,x->new ArrayList<>()).add(new int[]{destination,1});
+            adj.computeIfAbsent(destination,x->new ArrayList<>()).add(new int[]{source,0});
+        }
+
+        boolean[] visted=new boolean[n];
+        return dfsMinRorder(0,adj,visted);
+
+    }
+
+    private static int dfsMinRorder(int city, Map<Integer, List<int[]>> adj, boolean[] visted) {
+        visted[city] = true;
+        int reversals = 0;
+
+        for(int[] cities:adj.getOrDefault(city,new ArrayList<>())){
+            int nextCity=cities[0];
+            int reversal=cities[1];
+            if(!visted[nextCity]){
+                reversals+=reversal;
+                reversals+=dfsMinRorder(nextCity,adj,visted);
+            }
+        }
+        return reversals;
+    }
+
+
+    public static int minReorder(int n, int[][] connections)
+    {
+
+        Map<Integer,Set<Integer>> adj=new HashMap<>();
+
+        for(int[] connection:connections){
+            int source=connection[0];
+            int destination=connection[1];
+            adj.computeIfAbsent(source,x->new HashSet<>()).add(destination);
+        }
+
+        Set<Integer> corrected=new HashSet<>();
+        corrected.add(0);
+        int count=0;
+        for(int i=0;i<n;i++){
+            if(adj.get(i)==null){
+                continue;
+            }
+            if(adj.get(i).stream().anyMatch(corrected::contains)){
+                count++;
+            }
+            corrected.add(i);
+        }
+        // Replace this placeholder return statement with your code
+        return count;
+    }
+
+
+    // Tree Diameter
+
+    public static int treeDiameter(int[][] edges) {
+        // Replace this placeholder return statement with your code
+        Map<Integer,Set<Integer>> adj=new HashMap<>();
+        if (edges.length == 0) return 0;
+        for(int[] edge:edges){
+            int u=edge[0];
+            int v=edge[1];
+            adj.computeIfAbsent(u,x->new HashSet<>()).add(v);
+            adj.computeIfAbsent(v,x->new HashSet<>()).add(u);
+        }
+
+        boolean[] visited=new boolean[edges.length+1];
+        int[] diameter=new int[1];
+        dfsTreeDiameter(adj,0,visited,diameter);
+        return diameter[0];
+    }
+
+    private static int dfsTreeDiameter(Map<Integer, Set<Integer>> adj, int  node, boolean[] visited, int[] diameter) {
+        int top1=0;
+        int top2=0;
+        visited[node]=true;
+        for(int next:adj.getOrDefault(node,new HashSet<>())){
+            if(visited[next]==false){
+                int dist=1+dfsTreeDiameter(adj,next,visited,diameter);
+                if(dist>top1){
+                    top2=top1;
+                    top1=dist;
+
+                }else if(dist>top2){
+                    top2=dist;
+                }
+            }
+        }
+
+        diameter[0]=Math.max(diameter[0],top1+top2);
+        return top1;
+
+    }
+
+
+    // Path with Maximum Probability
+    public static double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
+        Map<Integer,List<double[]>> adj=new HashMap<>();
+
+        for(int i=0;i<edges.length;i++){
+            int src=edges[i][0];
+            int dest=edges[i][1];
+            double prob=succProb[i];
+            adj.computeIfAbsent(src,x->new ArrayList<>()).add(new double[]{dest,prob});
+            adj.computeIfAbsent(dest,x->new ArrayList<>()).add(new double[]{src,prob});
+       }
+
+        PriorityQueue<double[]> queue =
+                new PriorityQueue<>(Comparator.<double[]>comparingDouble(a -> a[0]).reversed());
+
+        queue.offer(new double[]{1.0,start});
+     //   boolean[] visited = new boolean[n];
+        double[] maxProb=new double[n];
+        maxProb[start]=1.0;
+
+        while(!queue.isEmpty()){
+            double[] current=queue.poll();
+            double probability=current[0];
+            int dest=(int)current[1];
+
+            if(dest==end)
+                return probability;
+
+            List<double[]> nextpaths=adj.get((int)dest);
+            if (nextpaths == null) continue;
+
+            for(double[] nextpath:nextpaths ){
+                double nextProbability=nextpath[1];
+                int nextDest=(int)nextpath[0];
+                double newProb=probability*nextProbability;
+                if(newProb>maxProb[nextDest]){
+                    maxProb[nextDest]=newProb;
+                    queue.offer(new double[]{newProb,nextDest});
+                }
+
+            }
+
+
+        }
+        // Replace this placeholder return statement with your code
+        return 0.0;
+    }
 
 // Lucky Numbers in a Matrix
     public static List<Integer> luckyNumbers(int[][] matrix) {
