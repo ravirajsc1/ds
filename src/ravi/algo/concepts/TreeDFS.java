@@ -1,6 +1,7 @@
 package ravi.algo.concepts;
 
 import java.util.*;
+import java.util.Stack;
 
 public class TreeDFS {
 
@@ -475,10 +476,163 @@ public class TreeDFS {
             System.out.println("-".repeat(100));
         }
 
+
+        Integer[][] test_cases = new Integer[][]{
+                {1},
+                {1, 2, 3, 4, 5},
+                {1, null, 3, null, 6},
+                {3, 2, 1, null, 4},
+                {5, 3, 8, 1, 4, 7, 9}
+        };
+
+       // Solution sol = new Solution();
+
+        for (int idx = 0; idx < test_cases.length; idx++) {
+            Integer[] arr2 = test_cases[idx];
+        //    System.out.println((idx + 1) + ". Input: " + Print.formatInputArray(arr2));
+
+        //    TreeNode<Integer> root = Print.build_tree(arr2);
+        //    List<Integer> result = sol.preorderTraversal(root);
+
+           // System.out.println("   Preorder traversal: " + result);
+            System.out.println("\n   Binary Tree: ");
+      //      Print.displayTree(root);
+            System.out.println("------------------------------------------------------------");
+        }
+
+//        Maximum Depth of Binary Tree
+
+// Kth Smallest Element in a BST
+
+
+    }
+
+    // Kth Smallest Element in a BST
+
+    public static int kthSmallestElementNonR(TreeNode<Integer> root, int k) {
+
+        Stack<TreeNode<Integer>> stack=new Stack<>();
+
+
+       while(true){
+            while(root!=null){
+                stack.push(root);
+                root=root.left;
+            }
+
+            root=stack.pop();
+            k--;
+
+            if(k==0)
+                return root.value;
+
+            root=root.right;
+       }
     }
 
 
+    public static int kthSmallestElement(TreeNode<Integer> root, int k) {
+
+        int[] val=new int[1];
+        int[] kv={k};
+        // Replace this placeholder return statement with your code
+         dfsKthSE(root,kv,val);
+        return val[0];
+    }
+
+    private static void dfsKthSE(TreeNode<Integer> root, int[] kv,int[] val) {
+
+       if(root==null && kv[0]<=0)
+           return;
+
+
+        dfsKthSE(root.left,kv,val);
+        kv[0]--;
+        if(kv[0]==0) {
+            val[0] = root.value;
+            return;
+        }
+        dfsKthSE(root.right,kv,val);
+
+
+    }
+
+    // Maximum Depth of Binary Tree
+
+    public static int findMaxDepth(TreeNode<Integer> root) {
+
+        // Replace this placeholder return statement with your code
+        return dfsMaxDepth(root);
+    }
+
+    private static int dfsMaxDepth(TreeNode<Integer> root) {
+        int maxLen=0;
+
+        if(root==null)
+            return 0;
+        int left=dfsMaxDepth(root.left);
+        int right=dfsMaxDepth(root.right);
+
+        return 1+Math.max(left,right);
+
+    }
+
+
+    // Binary Tree Preorder Traversal
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> output=new ArrayList<>();
+        TreeNode<Integer> node=root;
+        TreeNode<Integer> predessor=null;
+
+
+        while(node!=null){
+
+            if(node.left==null){
+                output.add(node.value);
+                node=node.right;
+            }else{
+                predessor=node.left;
+                while(predessor.right!=null && predessor.right!=node){
+                    predessor=predessor.right;
+                }
+
+                if(predessor.right==null){
+                    output.add(node.value);
+                    predessor.right=node;
+                    node=node.left;
+
+                }else{
+                    predessor.right=null;
+                    node=node.right;
+                }
+
+            }
+
+
+        }
+
+        return output;
+    }
+// Binary Tree Preorder Traversal
+    public List<Integer> preorderTraversal2(TreeNode root) {
+
+        List<Integer> res=new ArrayList<>();
+        dfspreorderTraversal(root,res);
+        // Replace this placeholder return statement with your code
+        return res;
+    }
+
+    private void dfspreorderTraversal(TreeNode<Integer> root, List<Integer> res) {
+        if(root==null){
+            return;
+        }
+        res.add(root.value);
+        dfspreorderTraversal(root.left,res);
+        dfspreorderTraversal(root.right,res);
+    }
+
     // Recover a Tree From Preorder Traversal
+
 
     public TreeNode<Integer> recoverFromPreorder(String traversal) {
 
@@ -518,8 +672,13 @@ public class TreeDFS {
         treeNode.right=dfsRecoerFromPreorder(traversal,index,depth+1);
         return treeNode;
 
+//    Binary Tree Preorder Traversal
+
+
 
     }
+
+
 
 
     // Sum of Distances in a Tree
