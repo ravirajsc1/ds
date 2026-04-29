@@ -320,12 +320,124 @@ public class TreeBSF {
     }
 
 
+
+    // Connect All Siblings of a Binary Tree
+
+    public static EduTreeNode<Integer> connectAllSiblings(EduTreeNode<Integer> root) {
+
+        // Replace this placeholder return statement with your code
+
+        Queue<EduTreeNode<Integer>> queue=new LinkedList<>();
+        queue.offer(root);
+        EduTreeNode<Integer> prev=null;
+        while(!queue.isEmpty()){
+            int size=queue.size();
+            for(int i=0;i<size;i++){
+                EduTreeNode<Integer> curr=queue.poll();
+                if(prev!=null)
+                    prev.next=curr;
+                if(curr.left!=null)
+                    queue.offer(curr.left);
+                if(curr.right!=null)
+                    queue.offer(curr.right);
+
+                prev=curr;
+
+            }
+        }
+        return root;
+    }
+
+
     // Open the Lock
 
         public int openLock(String[] deadends, String target)
 
 
         {
+
+            Map<Character, Character> nextSlot = new HashMap<>();
+            nextSlot.put('0', '1');
+            nextSlot.put('1', '2');
+            nextSlot.put('2', '3');
+            nextSlot.put('3', '4');
+            nextSlot.put('4', '5');
+            nextSlot.put('5', '6');
+            nextSlot.put('6', '7');
+            nextSlot.put('7', '8');
+            nextSlot.put('8', '9');
+            nextSlot.put('9', '0');
+
+            Map<Character, Character> prevSlot = new HashMap<>();
+            prevSlot.put('0', '9');
+            prevSlot.put('1', '0');
+            prevSlot.put('2', '1');
+            prevSlot.put('3', '2');
+            prevSlot.put('4', '3');
+            prevSlot.put('5', '4');
+            prevSlot.put('6', '5');
+            prevSlot.put('7', '6');
+            prevSlot.put('8', '7');
+            prevSlot.put('9', '8');
+
+
+            Set<String> visted=new HashSet<>(List.of(deadends));
+
+            Queue<String> pending=new LinkedList<>();
+            if (visted.contains("0000")) {
+                return -1;
+            }
+
+            pending.offer("0000");
+            visted.add("0000");
+            int track=0;
+            while(!pending.isEmpty()){
+
+                int size=pending.size();
+
+
+
+                for(int i=0;i<size;i++){
+
+                    String curr=pending.poll();
+
+                    if(curr.equals(target)){
+                        return track;
+                    }
+
+
+                    for(int j=0;j<4;j++){
+                        char[] next=curr.toCharArray();
+
+                        next[j]=nextSlot.get(next[j]);
+                        String nextValue=String.valueOf(next);
+                        if(!visted.contains(nextValue)) {
+                            pending.offer(nextValue);
+                            visted.add(nextValue);
+                        }
+
+
+
+                        char[] prev=curr.toCharArray();
+
+                        prev[j]=prevSlot.get(prev[j]);
+                        String prevValue=String.valueOf(prev);
+                        if(!visted.contains(prevValue)) {
+                            pending.offer(prevValue);
+                            visted.add(prevValue);
+                        }
+                    }
+
+
+
+
+                }
+
+                track++;
+
+
+            }
+
 
 
             // Replace this placeholder return statement with your code
