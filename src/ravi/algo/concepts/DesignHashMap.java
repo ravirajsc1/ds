@@ -320,7 +320,982 @@ public class DesignHashMap {
             System.out.println("\tTotal appeal: " + appealSum(stringValue));
             System.out.println(new String(new char[100]).replace('\0', '-'));
         }
+
+        //Continuous Subarray Sum
+
+        ArrayList<ArrayList<Integer>> testCasesC = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(23, 2, 4, 6, 7)),
+                new ArrayList<>(Arrays.asList(1, 2, 3)),
+                new ArrayList<>(Arrays.asList(5, 0, 0, 3)),
+                new ArrayList<>(Arrays.asList(0, 1)),
+                new ArrayList<>(Arrays.asList(7, 3, 2, 4, 9))
+        ));
+        int[] kValues = {6, 7, 3, 7, 6};
+
+        for (int i = 0; i < testCasesC.size(); i++) {
+            ArrayList<Integer> nums = testCasesC.get(i);
+            int k = kValues[i];
+            boolean result = checkSubarraySum(nums, k);
+
+            System.out.print((i + 1) + "\tnums: " + nums + "\n\tk: " + k + "\n\tResult: ");
+            System.out.println(result ? "True" : "False");
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+        //Unique Number of Occurrences
+
+        int[][] inputListU = {
+                {1, 2, 2, 1, 1, 3},
+                {1, 2},
+                {3, 5, -2, -3, -2, 5, 3},
+                {10, 10, 10, 10},
+                {1, 2, 3, 4, 5, 6}
+        };
+
+        for (int i = 0; i < inputListU.length; i++) {
+            int[] nums = inputListU[i];
+            boolean result = uniqueOccurrences(nums);
+            System.out.println((i + 1) + ".\tInput: " + java.util.Arrays.toString(nums));
+            System.out.println("\tOutput: " + result);
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+        // Longest Happy Prefix
+
+
+
+        String[] testCasesL = {
+                "rider",
+                "ababab",
+                "abcabc",
+                "aabaacaabaa",
+                "xyz",
+                "aaaaa"
+        };
+
+        for (int i = 0; i < testCasesL.length; i++) {
+            String testCase = testCasesL[i];
+            String result = longestPrefix(testCase);
+            System.out.println((i + 1) + ".\ts: " + testCase);
+            System.out.println("\tLongest Happy Prefix: " + result);
+            System.out.println(new String(new char[100]).replace("\0", "-"));
+        }
+
+        // Find Longest Self-Contained Substring
+        String[] testCasesF = {
+                "xyyx",      // Expected output: 2 ("yy")
+                "abab",      // Expected output: -1 (no valid substring)
+                "abacd",     // Expected output: 4 ("abac")
+                "aabbcc",    // Expected output: 2 ("aa", "bb", or "cc")
+                "abcabcabc"  // Expected output: -1 (all repeated across the string)
+        };
+
+        for (int i = 0; i < testCasesF.length; i++) {
+            System.out.println((i + 1) + ".\tstring: " + testCasesF[i]);
+            int result = maxSubstringLength(testCasesF[i]);
+            System.out.println("\tOutput: " + result);
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+         // Intersection of Two Arrays
+
+
+        int[][][] arrPairs = {
+                { {1, 2, 2, 1}, {2, 2} },
+                { {4, 9, 5}, {9, 4, 9, 8, 4} },
+                { {1, 3, 7}, {2, 4, 6} },
+                { {2, 2, 3, 3, 4}, {3, 3, 4, 4, 5} },
+                { {10, 20, 30}, {30, 40, 50} }
+        };
+
+        for (int i = 0; i < arrPairs.length; i++) {
+            int[] arr1 = arrPairs[i][0];
+            int[] arr2 = arrPairs[i][1];
+
+            System.out.println((i + 1) + ".\tarr1: " + Arrays.toString(arr1));
+            System.out.println("\tarr2: " + Arrays.toString(arr2) + "\n");
+            System.out.println("\tIntersection: " + Arrays.toString(intersection(arr1, arr2)));
+            System.out.println("--------------------------------------------------------------------------------------------------");
+        }
+
+        // Word Pattern
+        String[] patterns = {"abba", "abba", "aaaa", "abba", "abc"};
+        String[] strings = {
+                "dog cat cat dog",
+                "dog cat cat fish",
+                "dog cat cat dog",
+                "dog dog dog dog",
+                "red blue green"
+        };
+
+        // Run all test cases
+        for (int i = 0; i < patterns.length; i++) {
+            boolean result = wordPattern(patterns[i], strings[i]);
+            System.out.println((i + 1) + ".");
+            System.out.println("\tpattern: " + patterns[i]);
+            System.out.println("\tstring: " + strings[i]);
+            System.out.println("\tOutput: " + result);
+            System.out.println(new String(new char[100]).replace('\0', '-'));
+        }
+
+        //Valid Sudoku
+
+        char[][][] boards = get_input_boards();
+
+
+        for (int i = 0; i < boards.length; i++) {
+            char[][] board = boards[i];
+            System.out.println((i + 1) + ".\tBoard: ");
+            for (char[] row : board) {
+                System.out.print("\t\t[");
+                for (int j = 0; j < row.length; j++) {
+                    System.out.print("'" + row[j] + "'");
+                    if (j < row.length - 1) {
+                        System.out.print(", ");
+                    }
+                }
+                System.out.println("]");
+            }
+
+            if (isValidSudoku(board)) {
+                System.out.println("\n\t Result: The board is valid.");
+            } else {
+                System.out.println("\n\t Result: The board is invalid.");
+            }
+            System.out.println("----------------------------------------------------------------------------------------------------");
+        }
+
+        // Roman to Integer
+
+        List<String> romanInputs = List.of(
+                "III",
+                "IV",
+                "IX",
+                "LVIII",
+                "MCMXCIV",
+                "XII",
+                "XXVII",
+                "CMXL"
+        );
+
+        for (int i = 0; i < romanInputs.size(); i++) {
+            String roman = romanInputs.get(i);
+            System.out.println((i + 1) + ".\tRoman numeral = \"" + roman + "\"");
+
+            System.out.println("\n\tInteger value = " + romanToInt(roman));
+            System.out.println("-".repeat(100));
+        }
+
+        //Contiguous Array
+        int[][] testCasesa = {
+                {0, 1},
+                {0, 1, 0},
+                {1, 1, 0, 1, 0, 0},
+                {0, 0, 1, 1, 0, 1},
+                {1, 1, 1, 0, 0}
+        };
+
+        int i = 0;
+        for (int[] nums : testCasesa) {
+            System.out.print((i + 1) + ".\tnums: [");
+            for (int j = 0; j < nums.length; j++) {
+                System.out.print(nums[j]);
+                if (j + 1 < nums.length) System.out.print(", ");
+            }
+            System.out.println("]");
+   
+            System.out.println("\n\tMax Length: " + findMaxLength(nums));
+            System.out.println("-".repeat(100));
+            i++;
+        }
+
+        //Jewels and Stones
+        String[][] testcases = {
+                { "pQ", "ppPQQq" },
+                { "k", "kkkkK" },
+                { "LMn", "lLmMNn" },
+                { "cD", "ddddccccDD" },
+                { "tRz", "RttZzr" }
+        };
+
+
+
+        for (int ij = 0; ij < testcases.length; ij++) {
+            String jewels = testcases[ij][0];
+            String stones = testcases[ij][1];
+
+            System.out.println((ij + 1) + "\tjewels: " + jewels + ", stones: " + stones);
+            int result = numJewelsInStones(jewels, stones);
+            System.out.println("\n\tNumber of Jewels in Stones: " + result);
+            System.out.println("-".repeat(100) + "\n");
+        }
+    // Vowel Spellchecker
+
+
+        String[][][] testCases1 = {
+                {{"Apple", "apple", "APPLE"}, {"apple", "Apple", "APPLE", "aPPLE", "Opple", "applo", "banana"}},
+                {{"Stone", "stone", "STone"}, {"STONE", "stone", "Stone", "stane", "stune", "stons"}},
+                {{"Bat", "bat", "BaT"}, {"BAT", "bet", "bit", "bot", "but", "bAt", "cat"}},
+                {{"hello", "World", "HeLLo"}, {"Hello", "world", "WORLD", "hallo", "wurld", "Werld", "xyz"}},
+                {{"Tree", "free", "BREE"}, {"tree", "Tree", "TREE", "trae", "froe", "brie", "BRAE", "gree"}},
+        };
+
+        for (int i1 = 0; i1 < testCases1.length; i1++) {
+            String[] wordlist = testCases1[i1][0];
+            String[] queries = testCases1[i1][1];
+            String[] result = spellchecker(wordlist, queries);
+            System.out.println((i1 + 1) + ".\tInput array: " + Arrays.toString(wordlist));
+            System.out.println("\tTarget: " + Arrays.toString(queries));
+            System.out.println("\tResult: " + Arrays.toString(result));
+            System.out.println("-".repeat(100));
+        }
+
+        // N-Repeated Element in Size 2N Array
+        int[][] testCasesN = {
+                {9, 5, 6, 9},
+                {3, 3, 3, 1, 2, 3},
+                {7, 7, 1, 2, 7, 3, 7, 4},
+                {0, 0},
+                {4, 1, 4, 2, 4, 3, 4, 5, 4, 6},
+        };
+        for (int iN = 0; iN < testCasesN.length; iN++) {
+            int result = repeatedNTimes(testCasesN[iN]);
+            System.out.println((iN + 1) + ".\tInput array: " + Arrays.toString(testCasesN[iN]));
+            System.out.println("\tResult: " + result);
+            System.out.println("-".repeat(100));
+        }
+
+        // Powerful Integers
+
+
+        int[][] testCasesPower = {
+                {2, 2, 20},
+                {1, 1, 5},
+                {5, 3, 50},
+                {100, 100, 1000000},
+                {2, 5, 0},
+        };
+
+        for (int idx = 0; idx < testCasesPower.length; idx++) {
+            int xVal = testCasesPower[idx][0];
+            int yVal = testCasesPower[idx][1];
+            int boundVal = testCasesPower[idx][2];
+            List<Integer> result = powerfulIntegers(xVal, yVal, boundVal);
+            Collections.sort(result);
+            System.out.println((idx + 1) + ".\tInput x: " + xVal + ", y: " + yVal + ", bound: " + boundVal);
+            System.out.println("\tResult: " + result);
+            System.out.println("-".repeat(100));
+        }
+
+        // Before and After Puzzle
+
+        String[][] testCasesPu = {
+                {"hello world", "world cup", "cup cake"},
+                {"the dog", "dog days", "days are gone", "gone fishing"},
+                {"x", "x", "x"},
+                {"red car", "car wash", "wash day", "red carpet"},
+                {"go big", "big deal", "deal or no deal", "big time"},
+        };
+
+        for (int idx = 0; idx < testCasesPu.length; idx++) {
+            List<String> result = beforeAndAfterPuzzles(testCasesPu[idx]);
+            System.out.println((idx + 1) + ".\tInput array: " + Arrays.toString(testCasesPu[idx]));
+            System.out.println("\tResult: " + result);
+            System.out.println("-".repeat(100));
+        }
+
+
+        int[][][] testCasesT = {
+                {{3, 3, 3}, {3, 3}},
+                {{1, 2, 3, 4, 5}, {5, 4, 3, 2, 1}},
+                {{7, 7, 7, 7}, {7, 7}},
+                {{0, 0, 0}, {0, 0, 0}},
+                {{10, 20, 30}, {40, 50, 60}},
+        };
+        for (int iT = 0; iT < testCasesT.length; iT++) {
+            int[] result = intersect(testCasesT[iT][0], testCasesT[iT][1]);
+            System.out.println((iT + 1) + ".\tInput array: " + Arrays.toString(testCasesT[iT][0]));
+            System.out.println("\tTarget: " + Arrays.toString(testCasesT[iT][1]));
+            System.out.println("\tResult: " + Arrays.toString(result));
+            System.out.println("-".repeat(100));
+        }
+
+        // Subarray Sum Equals K
+
+
+        int[][] numsArray = {
+                {3, 4, 7, 2, -3, 1, 4, 2},
+                {1, -1, 0},
+                {0, 0, 0, 0},
+                {-1, -1, 1},
+                {5, 3, -2, 4, -1, 2, -3, 1},
+        };
+        int[] kArray = {7, 0, 0, 0, 5};
+
+        for (int iss = 0; iss < numsArray.length; iss++) {
+            int result = subarraySum(numsArray[iss], kArray[iss]);
+            System.out.println((iss + 1) + ".\tInput array: " + Arrays.toString(numsArray[iss]));
+            System.out.println("\tTarget: " + kArray[iss]);
+            System.out.println("\tResult: " + result);
+            System.out.println("-".repeat(100));
+        }
+
+        // Longest Palindrome
+
+
+        //  // Identify the Largest Outlier in an Array
+
+        int[][][] testCasesId = {
+                {{4, 8, 12, 20}},
+                {{3, 3, 6, 100}},
+                {{-5, -5, -10, 7}},
+                {{0, 0, 0, 1}},
+                {{2, 2, 2, 2, 8, 50}},
+        };
+
+        String separator = "-".repeat(100);
+
+        for (int is = 0; is < testCasesId.length; is++) {
+            int[] nums = testCasesId[is][0];
+            int result = getLargestOutlier(nums);
+
+            System.out.print((is + 1) + ".\tInput array: [");
+            for (int j = 0; j < nums.length; j++) {
+                System.out.print(nums[j]);
+                if (j + 1 < nums.length) System.out.print(", ");
+            }
+            System.out.println("]");
+            System.out.println("\tResult: " + result);
+            System.out.println(separator);
+        }
+
+        //Find the Length of the Longest Common Prefix
+
+        int[][][] testCasessT = {
+                {{12, 345, 6789}, {123, 456, 789}},
+                {{99, 998, 9999}, {9, 99, 999}},
+                {{56001, 78, 234}, {5600, 7, 23}},
+                {{100000000}, {100000000}},
+                {{11, 22, 33}, {44, 55, 66}},
+        };
+
+        for (int ist = 0; ist < testCasessT.length; ist++) {
+            int[] arr1 = testCasessT[ist][0];
+            int[] arr2 = testCasessT[ist][1];
+            int result = longestCommonPrefix(arr1, arr2);
+
+            System.out.println((ist + 1) + ".\tInput arr1: " + Arrays.toString(arr1));
+            System.out.println("\tInput arr2: " + Arrays.toString(arr2));
+            System.out.println("\tResult: " + result);
+            System.out.println("-".repeat(100));
+        }
+
     }
+
+    // Find the Length of the Longest Common Prefix
+
+    public static int longestCommonPrefix(int[] arr1, int[] arr2)
+    {
+        // Replace this placeholder return statement with your code
+        return -1;
+    }
+
+    // Identify the Largest Outlier in an Array
+    public static  int getLargestOutlier(int[] nums)
+    {
+        int totalSum = 0;
+        for (int num : nums) totalSum += num;
+
+        Map<Integer, Integer> freqMap = new HashMap<>();
+        for (int num : nums) {
+            freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+        }
+
+        int result=Integer.MIN_VALUE;
+        for(int outlier : freqMap.keySet()){
+
+            int remaining=totalSum-outlier;
+
+            if (remaining % 2 != 0) continue;
+
+            int x = remaining / 2;
+
+            if (!freqMap.containsKey(x)) continue;
+
+            if (x == outlier && freqMap.get(outlier) < 2) continue;
+
+            result = Math.max(result, outlier);
+
+        }
+
+        return result;
+    }
+
+    // Longest Palindrome
+
+    public int longestPalindrome(String s) {
+
+        Map<Character, Integer> map = new HashMap<>();
+
+        for (char ch : s.toCharArray()) {
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
+        }
+
+        int length = 0;
+        boolean hasOdd = false;
+
+        for (int freq : map.values()) {
+            if (freq % 2 == 0) {
+                length += freq;
+            } else {
+                length += freq - 1;
+                hasOdd = true;
+            }
+        }
+
+        if (hasOdd) {
+            length += 1;
+        }
+
+        return length;
+    }
+
+    // Subarray Sum Equals K
+
+    public  static int subarraySum(int[] nums, int k)
+    {
+
+        int sum=0;
+        int result=0;
+        Map<Integer,Integer> map=new HashMap<>();
+        map.put(0,1);
+
+        for(int num:nums){
+            sum+=num;
+            int complement=sum-k;
+            if(map.containsKey(complement)){
+                result+=map.get(complement);
+            }
+            map.put(sum,map.getOrDefault(sum,0)+1);
+
+        }
+
+        return result;
+    }
+
+    //Intersection of Two Arrays II
+
+    public static int[] intersect(int[] nums1, int[] nums2)
+    {
+        Map<Integer,Integer> map=new HashMap<>();
+        List<Integer> res=new ArrayList<>();
+        for(int num:nums1){
+            map.put(num,map.getOrDefault(num,0)+1);
+        }
+
+        for(int num:nums2){
+
+            if(map.containsKey(num) && map.getOrDefault(num,0)>0){
+                res.add(num);
+                map.put(num,map.get(num)-1);
+
+            }
+        }
+
+
+        return res.stream().mapToInt(m->m).toArray();
+    }
+    //Before and After Puzzle
+    public static List<String> beforeAndAfterPuzzles(String[] phrases)
+    {
+
+        Map<String,List<Integer>> first=new HashMap<>();
+
+        List<String> res=new ArrayList<>();
+        int i=0;
+        for(String str:phrases){
+            String[] st=str.split(" ");
+            first.computeIfAbsent(st[0],k->new ArrayList<>()).add(i);
+            i++;
+        }
+
+        Set<String> resultSet = new TreeSet<>();
+
+        for (int in = 0; in < phrases.length; in++) {
+            String[] st=phrases[in].split(" ");
+            String lastWord=st[st.length-1];
+            if(first.containsKey(lastWord)){
+                for(int j:first.get(lastWord)){
+                    if(in!=j){
+                        String restOfSecond = phrases[j].substring(lastWord.length());
+                        String merged = phrases[in] + restOfSecond;
+                        resultSet.add(merged);
+                    }
+
+                }
+
+            }
+
+        }
+
+        return new ArrayList<>(resultSet);
+    }
+
+    // Powerful Integers
+
+    public static List<Integer> powerfulIntegers(int x, int y, int bound)
+    {
+
+        long powX=1;
+        Set<Integer> resul=new HashSet<>();
+        while(powX<bound){
+
+            long powY=1;
+            while(powX+powY<=bound){
+                resul.add((int)(powY+powX));
+                if(y==1)
+                    break;
+
+                powY*=y;
+            }
+        if(x==1)
+            break;
+
+        powX*=x;
+
+
+        }
+        // Replace this placeholder return statement with your code
+        return new ArrayList<>(resul);
+    }
+
+
+    // N-Repeated Element in Size 2N Array
+
+    public static int repeatedNTimes(int[] nums)
+    {
+
+        Set<Integer> set=new HashSet<>();
+
+        for(int num:nums){
+            if(set.contains(num)){
+                return num;
+            }
+            set.add(num);
+
+        }
+        return -1;
+    }
+
+    // Vowel Spellchecker
+
+    public static String[] spellchecker(String[] wordlist, String[] queries) {
+        Set<String> exactSet=new HashSet<>(Arrays.asList(wordlist));
+
+        Map<String,String> capMap=new HashMap<>();
+
+        for(String word:wordlist){
+            String lowWord=word.toLowerCase();
+            if(!capMap.containsKey(lowWord))
+                capMap.put(lowWord,word);
+
+        }
+
+        Map<String,String> vowMap=new HashMap<>();
+        for(String word:wordlist){
+            String devWord=deVowal(word);
+            if(!vowMap.containsKey(devWord))
+                vowMap.put(devWord,word);
+
+        }
+
+        String[] answer = new String[queries.length];
+        int i=0;
+        for(String query:queries){
+            if(exactSet.contains(query)){
+                answer[i]=query;
+            }else if(capMap.containsKey(query)){
+                answer[i]=capMap.get(query);
+            }else if(vowMap.containsKey(deVowal(query))){
+                answer[i]=vowMap.get(deVowal(query));
+            }else{
+                answer[i]="";
+            }
+            i++;
+        }
+
+
+        return answer;
+    }
+
+    private static String deVowal(String word) {
+        StringBuilder sb=new StringBuilder();
+        for(char ch:word.toCharArray()){
+            if(isVowel(ch)){
+                sb.append("*");
+            }else{
+                sb.append(Character.toLowerCase(ch));
+            }
+        }
+        return sb.toString();
+    }
+
+    private static boolean isVowel(char ch) {
+        char low=Character.toLowerCase(ch);
+        if(low=='a'  || low=='i' || low=='o' || low=='u' || low=='e' ){
+            return true;
+        }
+        return false;
+
+    }
+
+    //Jewels and Stones
+    public static int numJewelsInStones(String jewels, String stones) {
+
+        Map<Character,Integer> map=new HashMap<>();
+
+        for(char ch:stones.toCharArray()){
+            map.put(ch,map.getOrDefault(ch,0)+1);
+
+        }
+
+        int sum=0;
+
+        for(char ch:jewels.toCharArray()){
+            if(map.containsKey(ch))
+                sum+=map.get(ch);
+        }
+        return sum;
+    }
+//Contiguous Array
+    public static int findMaxLength(int[] nums)
+    {
+        Map<Integer,Integer> map=new HashMap<>();
+        int count=0;
+        map.put(0,-1);
+        int maxL=0;
+
+        for(int i=0;i<nums.length;i++){
+            int n=(nums[i]==0)?-1:1;
+            count+=n;
+
+            if(!map.containsKey(count)){
+                map.put(count,i);
+            }
+
+            maxL=Math.max(maxL,i-map.get(count));
+
+
+        }
+
+        return maxL;
+    }
+
+    //Roman to Integer
+    public static int romanToInt(String s) {
+        Map<String, Integer> valueMap = Map.ofEntries(
+                Map.entry("I", 1),
+                Map.entry("V", 5),
+                Map.entry("X", 10),
+                Map.entry("L", 50),
+                Map.entry("C", 100),
+                Map.entry("D", 500),
+                Map.entry("M", 1000),
+                Map.entry("IV", 4),
+                Map.entry("IX", 9),
+                Map.entry("XL", 40),
+                Map.entry("XC", 90),
+                Map.entry("CD", 400),
+                Map.entry("CM", 900)
+        );
+
+        int i=0;
+        int sum=0;
+        while(i<s.length()-1){
+
+            String firstCheck=s.substring(i,i+2);
+            if(valueMap.containsKey(firstCheck)){
+                sum+=valueMap.get(firstCheck);
+                i+=2;
+                continue;
+            }
+
+            String secondCheck=s.substring(i,i+1);
+            if(valueMap.containsKey(secondCheck)){
+                sum+=valueMap.get(secondCheck);
+                i+=1;
+            }
+
+        }
+
+        // Replace this placeholder return statement with your code
+        return sum;
+    }
+
+
+    public static char[][][] get_input_boards() {
+        return new char[][][] {
+                {
+                        {'.','.','.','.','.','.','.','7','.'},
+                        {'2','7','5','.','.','.','3','1','4'},
+                        {'.','.','.','.','2','7','.','5','.'},
+                        {'9','8','.','.','.','.','.','3','1'},
+                        {'.','3','1','8','.','4','.','.','.'},
+                        {'.','.','.','1','.','.','8','.','5'},
+                        {'7','.','6','2','.','.','1','8','.'},
+                        {'.','9','.','7','.','.','.','.','.'},
+                        {'4','1','.','.','.','5','.','.','7'}
+                },
+                {
+                        {'5','3','3','6','7','8','9','1','2'},
+                        {'6','7','2','1','9','5','3','4','8'},
+                        {'1','9','8','3','4','2','5','6','7'},
+                        {'8','5','9','7','6','1','4','2','3'},
+                        {'4','2','6','8','5','3','7','9','1'},
+                        {'7','1','3','9','2','4','8','5','6'},
+                        {'9','6','1','5','3','7','2','8','4'},
+                        {'2','8','7','4','1','9','6','3','5'},
+                        {'3','4','5','2','8','6','1','7','9'}
+                },
+                {
+                        {'6','4','5','9','8','2','1','3','7'},
+                        {'7','2','8','3','1','6','5','9','4'},
+                        {'3','9','1','5','4','7','6','8','2'},
+                        {'9','8','7','1','5','3','4','2','6'},
+                        {'4','1','6','2','7','9','8','5','3'},
+                        {'5','3','2','8','6','4','7','1','9'},
+                        {'8','7','3','6','9','5','2','4','1'},
+                        {'2','5','4','7','3','1','9','6','8'},
+                        {'1','6','9','4','2','8','3','7','5'}
+                },
+                {
+                        {'6','3','9','4','2','5','7','1','8'},
+                        {'6','4','8','1','3','7','9','6','5'},
+                        {'5','7','1','9','6','8','3','4','2'},
+                        {'1','6','2','7','5','4','8','3','9'},
+                        {'4','8','3','6','9','2','5','7','1'},
+                        {'9','5','7','3','8','1','6','2','4'},
+                        {'8','2','6','5','4','3','1','9','7'},
+                        {'3','1','5','2','7','9','4','8','6'},
+                        {'7','9','4','8','1','6','2','5','3'}
+                },
+                {
+                        {'5','3','.','.','7','.','.','.','.'},
+                        {'6','.','.','1','9','5','.','.','.'},
+                        {'.','9','8','.','.','.','.','6','.'},
+                        {'8','.','.','.','6','.','.','.','3'},
+                        {'4','.','.','8','.','3','.','.','1'},
+                        {'7','.','.','.','2','.','.','.','6'},
+                        {'.','6','.','.','.','.','2','8','.'},
+                        {'.','.','.','4','1','9','.','.','5'},
+                        {'.','.','.','.','8','.','.','7','9'}
+                }
+        };
+
+
+    }
+
+
+    //Valid Sudoku
+    public static boolean isValidSudoku(char[][] board) {
+
+        List<Set<Integer>> row=new ArrayList<>();
+        List<Set<Integer>> col=new ArrayList<>();
+        List<Set<Integer>> box=new ArrayList<>();
+
+        for(int i=0;i<9;i++){
+            row.add(new HashSet<>());
+            col.add(new HashSet<>());
+            box.add(new HashSet<>());
+        }
+
+        for(int r=0;r<board.length;r++){
+            for(int c=0;c<board[0].length;c++){
+                int val=board[r][c];
+
+                if (val == '.') {
+                    continue;
+                }
+
+                int bpos=(r/3)*3+c/3;
+
+                if(row.get(r).contains(val) || col.get(c).contains(val) || box.get(bpos).contains(val) ){
+                    return false;
+                }
+
+                row.get(r).add(val);
+                col.get(c).add(val);
+                box.get(bpos).add(val);
+            }
+        }
+        return true;
+    }
+
+    // Word Pattern
+    public static boolean wordPattern (String pattern, String s) {
+
+        String[] strings=s.split(" ");
+        Map<Character,String> map1=new HashMap<>();
+        Map<String,Character> map2=new HashMap<>();
+
+        if(strings.length!=pattern.length()) return false;
+
+        for(int i=0;i<pattern.length();i++){
+            if(map1.containsKey(pattern.charAt(i)) && !strings[i].equals(map1.get(pattern.charAt(i)))){
+                return false;
+            }
+
+            if(map2.containsKey(strings[i]) && pattern.charAt(i)!=map2.get(strings[i])){
+                return false;
+            }
+
+
+            map1.put(pattern.charAt(i),strings[i]);
+            map2.put(strings[i],pattern.charAt(i));
+        }
+
+        return true;
+    }
+
+    // Intersection of Two Arrays
+    public static int[] intersection(int[] arr1, int[] arr2) {
+        Set hashSet=new HashSet<>();
+        Set<Integer> res=new HashSet<>();
+        for(int arr:arr2){
+            hashSet.add(arr);
+        }
+
+        for(int arr:arr1){
+            if(hashSet.contains(arr)){
+                res.add(arr);
+            }
+        }
+        // Replace this placeholder return statement with your code
+        return  res.stream()
+                .mapToInt(Integer::intValue)
+                .toArray();
+    }
+    // Find Longest Self-Contained Substring
+
+    public static int maxSubstringLength (String s) {
+
+        Map<Character, Integer> first = new HashMap<>();
+        Map<Character, Integer> last = new HashMap<>();
+
+
+
+
+        for (int i = 0; i < s.length(); i++) {
+            if(!first.containsKey(s.charAt(i))){
+               first.put(s.charAt(i),i);
+            }
+            last.put(s.charAt(i),i);
+        }
+
+        int max=0;
+        for(char c1:first.keySet()){
+            int start=first.get(c1);
+            int end=last.get(c1);
+            int j=start;
+            while(j<s.length()){
+                char c2=s.charAt(j);
+
+                if(first.get(c2)<start) {
+                    break;
+                }
+                end=Math.max(end,last.get(c2));
+
+                if(j==end && end-start+1!=s.length()){
+                    max=Math.max(max,end-start+1);
+                }
+                j++;
+            }
+
+
+        }
+        return max;
+    }
+
+    //Longest Happy Prefix
+
+    public static String longestPrefix(String s) {
+
+        long powBase=1;
+        long suffixHash=0;
+        long prefixHash=0;
+        long mod= 1000000007;
+        int b=31;
+
+        int length=0;
+        int n=s.length();
+
+        for(int i=0;i<n-1;i++){
+
+            prefixHash=( prefixHash*b + s.charAt(i))%mod;
+            suffixHash= (suffixHash + s.charAt(n-i-1)*powBase)%mod;
+            powBase=(powBase*b)%mod;
+            if(prefixHash==suffixHash){
+                length=i+1;
+            }
+
+        }
+
+         return s.substring(0,length);
+
+    }
+
+    //Unique Number of Occurrences
+    public static boolean uniqueOccurrences(int[] nums) {
+
+        Map<Integer,Integer> feqMap=new HashMap<>();
+        Set<Integer> mapOfreq=new HashSet<>();
+
+        for(int num:nums){
+            feqMap.put(num,feqMap.getOrDefault(num,0)+1);
+        }
+
+
+        for(Map.Entry<Integer,Integer> entry:feqMap.entrySet()){
+            int freq=entry.getValue();
+            if(mapOfreq.contains(freq)){
+                return false;
+            }else{
+                mapOfreq.add(freq);
+            }
+
+        }
+
+        return true;
+    }
+
+    //Continuous Subarray Sum
+    public  static boolean checkSubarraySum(ArrayList<Integer> nums, int k) {
+
+        Map<Integer,Integer> track=new HashMap<>();
+
+        track.put(-1,0);
+
+        int culSum=0;
+        for(int i=0;i<nums.size();i++){
+            culSum+=nums.get(i);
+            int reminder=culSum%k;
+
+            if(reminder<0)
+                reminder+=k;
+            if(track.containsKey(reminder)){
+                int length=i-track.get(reminder);
+                if(length>=2){
+                    return true;
+                }
+            }else{
+                track.put(reminder,i);
+            }
+
+        }
+
+        // Return this placeholder return statement with your code
+        return false;
+    }
+
 
 
     // Total Appeal of a String
